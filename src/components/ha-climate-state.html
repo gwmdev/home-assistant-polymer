@@ -1,4 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel='import' href='../../bower_components/paper-icon-button/paper-icon-button.html'>
+<link rel="import" href="../util/hass-mixins.html">
+<link rel="import" href="../util/hass-util.html">
 
 <dom-module id="ha-climate-state">
   <template>
@@ -18,28 +22,67 @@
     </style>
 
     <div class='target'>
+      <paper-icon-button
+        icon='mdi:power'
+        on-tap='handleTogglePower'
+        class='self-center secondary'
+      ></paper-icon-button>
       <span class="state-label">
-        [[stateObj.state]]
+        [[computeStateDisplay(localize, stateObj, language)]]
       </span>
-      [[computeTarget(stateObj)]]
+      <template is="dom-if" if="{{!isOffMode}}">
+          [[computeTarget(stateObj)]]
+      </template>
     </div>
-
-    <div class='current'>
-      Currently: [[computeCurrentStatus(stateObj)]]
-    </div>
+    <template is="dom-if" if="{{!isOffMode}}">
+      <div class='current'>
+        当前温度: [[computeCurrentStatus(stateObj)]]
+      </div>
+    </template>
   </template>
 </dom-module>
 
 <script>
-class HaClimateState extends Polymer.Element {
+class HaClimateState extends window.hassMixins.LocalizeMixin(Polymer.Element) {
   static get is() { return 'ha-climate-state'; }
 
   static get properties() {
     return {
-      stateObj: Object,
+      hass: Object,
+      stateObj: {
+        type: Object,
+        observer: '_stateObjChanged'
+      },
+      isOffMode: {
+        type: Boolean,
+        value: true
+      },
+      inDialog: {
+        type: Boolean,
+        value: false,
+      }
     };
   }
 
+  handleTogglePower(ev){
+    console.log("power clicked")
+    console.log(ev);
+    ev.stopPropagation();
+    if(this.stateObj.attributes.power === 'off'){
+      console.log('turning on...');
+      this.hass.callService('climate', 'turn_on', {entity_id: this.stateObj.entity_id})
+      .then(() => {
+        this._stateObjChanged(this.stateObj);
+      });
+    } else {
+      console.log('turning off...');
+      this.hass.callService('climate', 'turn_off', {entity_id: this.stateObj.entity_id})
+      .then(() => {
+        this._stateObjChanged(this.stateObj);
+      });
+    }
+  }
+  
   computeCurrentStatus(stateObj) {
     if (stateObj.attributes.current_temperature) {
       return `${stateObj.attributes.current_temperature} ${stateObj.attributes.unit_of_measurement}`;
@@ -48,6 +91,28 @@ class HaClimateState extends Polymer.Element {
     }
 
     return '';
+  }
+
+  ready() {
+    super.ready();
+    if(this.stateObj.state == 'off'){
+      this.isOffMode = true;
+    } else {
+        this.isOffMode = false;
+    }
+  }
+
+  _stateObjChanged(newState, oldState) {
+    if(newState == null){
+      this.isOffMode = true;
+      return;
+    }
+
+    if(newState.state == 'off'){
+      this.isOffMode = true;
+    } else {
+      this.isOffMode = false;
+    }
   }
 
   computeTarget(stateObj) {
@@ -64,6 +129,10 @@ class HaClimateState extends Polymer.Element {
     }
 
     return '';
+  }
+
+  computeStateDisplay(localize, stateObj, language) {
+    return window.hassUtil.computeStateDisplay(localize, stateObj, language);
   }
 }
 customElements.define(HaClimateState.is, HaClimateState);

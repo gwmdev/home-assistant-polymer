@@ -15,6 +15,9 @@ export default function computeStateDisplay(localize, stateObj, language) {
       if (!stateObj._stateDisplay) {
         stateObj._stateDisplay = localize(`state.${domain}.default.${stateObj.state}`);
       }
+    } else if (domain === 'climate') {
+      stateObj._stateDisplay =
+        localize(`state.${domain}.${stateObj.state}`);
     } else if (stateObj.attributes.unit_of_measurement && !['unknown', 'unavailable'].includes(stateObj.state)) {
       stateObj._stateDisplay = stateObj.state + ' ' + stateObj.attributes.unit_of_measurement;
     } else if (domain === 'input_datetime') {

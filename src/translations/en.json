@@ -182,7 +182,10 @@
       "performance": "Performance",
       "high_demand": "High demand",
       "heat_pump": "Heat pump",
-      "gas": "Gas"
+      "gas": "Gas",
+      "medium": "Medium",
+      "low": "Low",
+      "high": "High"
     },
     "configurator": {
       "configure": "Configure",

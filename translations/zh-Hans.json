@@ -138,7 +138,10 @@
             "performance": "性能",
             "high_demand": "高需求",
             "heat_pump": "热泵",
-            "gas": "燃气"
+            "gas": "燃气",
+            "medium": "中速",
+            "low": "低速",
+            "high": "高速"
         },
         "configurator": {
             "configure": "设置",

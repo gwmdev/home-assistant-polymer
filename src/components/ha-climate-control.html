@@ -37,10 +37,10 @@
     </div>
     <div class="control-buttons">
       <div>
-        <paper-icon-button icon="mdi:chevron-up" on-tap="incrementValue"></paper-icon-button>
+        <paper-icon-button disabled="[[isOffMode]]" icon="mdi:chevron-up" on-tap="incrementValue"></paper-icon-button>
       </div>
       <div>
-        <paper-icon-button icon="mdi:chevron-down" on-tap="decrementValue"></paper-icon-button>
+        <paper-icon-button disabled="[[isOffMode]]" icon="mdi:chevron-down" on-tap="decrementValue"></paper-icon-button>
       </div>
     </div>
   </template>
@@ -68,6 +68,10 @@ class HaClimateControl extends window.hassMixins.EventsMixin(Polymer.Element) {
         type: Number,
         value: 1,
       },
+      isOffMode: {
+        type: Boolean,
+        value: true,
+      }
     };
   }
   temperatureStateInFlux(inFlux) {

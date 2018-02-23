@@ -22,7 +22,7 @@
 
     <div class='horizontal justified layout'>
       <state-info state-obj="[[stateObj]]" in-dialog='[[inDialog]]'></state-info>
-      <ha-climate-state state-obj="[[stateObj]]"></ha-climate-state>
+      <ha-climate-state hass="[[hass]]" in-dialog="[[inDialog]]" state-obj="[[stateObj]]"></ha-climate-state>
     </div>
   </template>
 </dom-module>
@@ -33,6 +33,7 @@ class StateCardClimate extends Polymer.Element {
 
   static get properties() {
     return {
+      hass: Object,
       stateObj: Object,
       inDialog: {
         type: Boolean,

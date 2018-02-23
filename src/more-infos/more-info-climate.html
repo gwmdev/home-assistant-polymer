@@ -121,10 +121,9 @@
 
       <div class='container-temperature'>
         <div class$='[[stateObj.attributes.operation_mode]]'>
-          <div hidden$='[[!supportsTemperatureControls(stateObj)]]'>Target
-            Temperature</div>
+          <div hidden$='[[!supportsTemperatureControls(stateObj)]]'>设定温度</div>
           <template is='dom-if' if='[[supportsTemperature(stateObj)]]'>
-            <ha-climate-control
+            <ha-climate-control is-off-mode="[[isOffMode]]"
               value='[[stateObj.attributes.temperature]]'
               units='[[stateObj.attributes.unit_of_measurement]]'
               step='[[computeTemperatureStepSize(stateObj)]]'
@@ -161,10 +160,10 @@
 
       <template is='dom-if' if='[[supportsHumidity(stateObj)]]'>
         <div class='container-humidity'>
-          <div>Target Humidity</div>
+          <div>设定湿度</div>
             <div class="single-row">
               <div class="target-humidity">[[stateObj.attributes.humidity]] %</div>
-              <paper-slider
+              <paper-slider disabled="[[isOffMode]]"
                 class='humidity'
                 min='[[stateObj.attributes.min_humidity]]'
                 max='[[stateObj.attributes.max_humidity]]'
@@ -180,12 +179,12 @@
       <template is='dom-if' if='[[supportsOperationMode(stateObj)]]'>
         <div class='container-operation_list'>
           <div class='controls'>
-            <paper-dropdown-menu class='capitalize' label-float dynamic-align label='Operation'>
+            <paper-dropdown-menu disabled="{{isOffMode}}" class='capitalize' label-float dynamic-align label='模式'>
               <paper-listbox slot="dropdown-content" selected="{{operationIndex}}">
                 <template is='dom-repeat'
                           items='[[stateObj.attributes.operation_list]]'
                           on-dom-change='handleOperationListUpdate'>
-                  <paper-item class="capitalize">[[item]]</paper-item>
+                  <paper-item value="[[item]]" class="capitalize">[[trans(localize, item)]]</paper-item>
                 </template>
               </paper-listbox>
             </paper-dropdown-menu>
@@ -195,12 +194,12 @@
 
       <template is='dom-if' if='[[supportsFanMode(stateObj)]]'>
         <div class='container-fan_list'>
-          <paper-dropdown-menu label-float dynamic-align label='Fan Mode'>
+          <paper-dropdown-menu  disabled="{{isOffMode}}" label-float dynamic-align label='风速'>
             <paper-listbox slot="dropdown-content" selected="{{fanIndex}}">
               <template is='dom-repeat'
                         items='[[stateObj.attributes.fan_list]]'
                         on-dom-change='handleFanListUpdate'>
-                <paper-item>[[item]]</paper-item>
+                <paper-item value="[[item]]">[[trans(localize, item)]]</paper-item>
               </template>
             </paper-listbox>
           </paper-dropdown-menu>
@@ -209,12 +208,12 @@
 
       <template is='dom-if' if='[[supportsSwingMode(stateObj)]]'>
         <div class='container-swing_list'>
-          <paper-dropdown-menu label-float dynamic-align label='Swing Mode'>
+          <paper-dropdown-menu  disabled="[[isOffMode]]" label-float dynamic-align label='扫风模式'>
             <paper-listbox slot="dropdown-content" selected="{{swingIndex}}">
               <template is='dom-repeat'
                         items='[[stateObj.attributes.swing_list]]'
                         on-dom-change='handleSwingListUpdate'>
-                <paper-item>[[item]]</paper-item>
+                <paper-item value="[[item]]">[[trans(localize, item)]]</paper-item>
               </template>
             </paper-listbox>
           </paper-dropdown-menu>
@@ -249,7 +248,7 @@
 </dom-module>
 
 <script>
-class MoreInfoClimate extends window.hassMixins.EventsMixin(Polymer.Element) {
+class MoreInfoClimate extends window.hassMixins.LocalizeMixin(window.hassMixins.EventsMixin(Polymer.Element)) {
   static get is() { return 'more-info-climate'; }
 
   static get properties() {
@@ -283,10 +282,38 @@ class MoreInfoClimate extends window.hassMixins.EventsMixin(Polymer.Element) {
       awayToggleChecked: Boolean,
       auxToggleChecked: Boolean,
       onToggleChecked: Boolean,
+      isOffMode: {
+        type: Boolean,
+        value: true
+      },
     };
   }
 
+  ready() {
+    super.ready();
+    if(this.stateObj.state == 'off'){
+      this.isOffMode = true;
+    } else {
+        this.isOffMode = false;
+    }
+  }
+
+  trans(localize, item) {
+    return localize(`state.climate.${item}`);
+  }
+
   stateObjChanged(newVal, oldVal) {
+    if(newVal == null){
+      this.isOffMode = true;
+    } else {
+      if(newVal.state == 'off'){
+        this.isOffMode = true;
+      } else {
+        this.isOffMode = false;
+      }
+    }
+
+    
     this.awayToggleChecked = newVal.attributes.away_mode === 'on';
     this.auxToggleChecked = newVal.attributes.aux_heat === 'on';
     this.onToggleChecked = newVal.state !== 'off';
