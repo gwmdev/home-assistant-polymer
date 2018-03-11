@@ -7,6 +7,11 @@
 
 <link rel="import" href="../../src/components/buttons/ha-call-api-button.html">
 <link rel='import' href='../../src/components/ha-markdown.html'>
+<link rel='import' href='../../src/resources/ha-style.html'>
+<link rel='import' href='../../src/components/hassio-card-content.html'>
+<link rel='import' href='../../src/util/hass-mixins.html'>
+
+<link rel='import' href='./hassio-addon-more-info.html'>
 
 <dom-module id="hassio-addon-info">
   <template>
@@ -61,20 +66,27 @@
     <template is='dom-if' if='[[computeUpdateAvailable(addon)]]'>
       <paper-card heading='Update available! 🎉'>
         <div class='card-content'>
-          <hassio-item-info
+          <hassio-card-content
             title='[[addon.name]] [[addon.last_version]] is available'
             description='You are currently running version [[addon.version]]'
             icon='mdi:arrow-up-bold-circle'
-            classname='update'
-          ></hassio-item-info>
+            icon-class='update'
+          ></hassio-card-content>
         </div>
         <div class='card-actions'>
           <ha-call-api-button
             hass='[[hass]]'
             path='hassio/addons/[[addonSlug]]/update'
           >Update</ha-call-api-button>
+          <template is='dom-if' if='[[addon.changelog]]'>
+            <paper-button on-click='openChangelog'>Changelog</paper-button>
+          </template>
         </div>
       </paper-card>
+      <hassio-addon-more-info
+        title='Changelog'
+        content='[[changelog]]'
+      ></hassio-addon-more-info>
     </template>
 
     <paper-card>
@@ -131,11 +143,10 @@
       </div>
       <div class='card-actions'>
         <template is='dom-if' if='[[addon.version]]'>
-          <ha-call-api-button
+          <paper-button
             class='warning'
-            hass='[[hass]]'
-            path='hassio/addons/[[addonSlug]]/uninstall'
-          >Uninstall</ha-call-api-button>
+            on-click='_unistallClicked'
+          >Uninstall</paper-button>
           <template is='dom-if' if='[[addon.build]]'>
             <ha-call-api-button
               class='warning'
@@ -155,7 +166,7 @@
               path='hassio/addons/[[addonSlug]]/stop'
             >Stop</ha-call-api-button>
           </template>
-          <template is='dom-if' if='[[!isRunning]]'>            
+          <template is='dom-if' if='[[!isRunning]]'>
             <ha-call-api-button
               hass='[[hass]]'
               path='hassio/addons/[[addonSlug]]/start'
@@ -189,7 +200,7 @@
 </dom-module>
 
 <script>
-class HassioAddonInfo extends Polymer.Element {
+class HassioAddonInfo extends window.hassMixins.EventsMixin(Polymer.Element) {
   static get is() { return 'hassio-addon-info'; }
 
   static get properties() {
@@ -197,6 +208,7 @@ class HassioAddonInfo extends Polymer.Element {
       hass: Object,
       addon: Object,
       addonSlug: String,
+      changelog: String,
       isRunning: {
         type: Boolean,
         computed: 'computeIsRunning(addon)',
@@ -232,6 +244,35 @@ class HassioAddonInfo extends Polymer.Element {
   autoUpdateToggled() {
     const data = { auto_update: !this.addon.auto_update };
     this.hass.callApi('POST', `hassio/addons/${this.addonSlug}/options`, data);
+  }
+
+  openChangelog() {
+    this.hass.callApi('get', `hassio/addons/${this.addonSlug}/changelog`)
+      .then((data) => {
+        this.changelog = data;
+      }, () => {
+        this.changelog = 'Error getting changelog';
+      });
+    this.shadowRoot.querySelector('hassio-addon-more-info').openDialog();
+  }
+
+  _unistallClicked() {
+    if (!confirm('Are you sure you want to uninstall this add-on?')) {
+      return;
+    }
+    const path = `hassio/addons/${this.addonSlug}/uninstall`;
+    const eventData = {
+      path: path,
+    };
+    this.hass.callApi('post', path).then((resp) => {
+      eventData.success = true;
+      eventData.response = resp;
+    }, (resp) => {
+      eventData.success = false;
+      eventData.response = resp;
+    }).then(() => {
+      this.fire('hass-api-called', eventData);
+    });
   }
 }
 customElements.define(HassioAddonInfo.is, HassioAddonInfo);

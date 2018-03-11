@@ -2,9 +2,11 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
+<link rel='import' href='../../src/resources/ha-style.html'>
+
 <dom-module id="hassio-addon-logs">
   <template>
-    <style include="iron-flex ha-style">
+    <style include="ha-style">
       :host,
       paper-card {
         display: block;
@@ -15,7 +17,7 @@
         <pre>[[log]]</pre>
       </div>
       <div class="card-actions">
-        <paper-button on-tap='refresh'>Refresh</paper-button>
+        <paper-button on-click='refresh'>Refresh</paper-button>
       </div>
     </paper-card>
   </template>

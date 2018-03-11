@@ -4,7 +4,7 @@
 
 <dom-module id='state-history-chart-timeline'>
   <template>
-      <ha-chart-base publish data="[[chartData]]"></ha-chart-base>
+      <ha-chart-base data="[[chartData]]"></ha-chart-base>
   </template>
 </dom-module>
 <script>
@@ -129,9 +129,24 @@ class StateHistoryChartTimeline extends Polymer.Element {
       labels.push(entityDisplay);
     });
 
+    const formatTooltipLabel = function (item, data) {
+      const values = data.datasets[item.datasetIndex].data[item.index];
+
+      const start = window.hassUtil.formatDateTime(values[0]);
+      const end = window.hassUtil.formatDateTime(values[1]);
+      const state = values[2];
+
+      return [state, start, end];
+    };
+
     const chartOptions = {
       type: 'timeline',
       options: {
+        tooltips: {
+          callbacks: {
+            label: formatTooltipLabel
+          }
+        },
         scales: {
           xAxes: [{
             ticks: {

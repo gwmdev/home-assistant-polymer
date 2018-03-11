@@ -4,6 +4,8 @@
 <link rel='import' href='../../src/util/hass-util.html'>
 
 <script>
+'use strict';
+
 {
   const RECENT_THRESHOLD = 60000; // 1 minute
   const RECENT_CACHE = {};
@@ -14,7 +16,6 @@
   function computeHistory(stateHistory, localize, language) {
     const lineChartDevices = {};
     const timelineDevices = [];
-
     if (!stateHistory) {
       return { line: [], timeline: [] };
     }
@@ -53,6 +54,7 @@
 
     const unitStates = Object.keys(lineChartDevices).map(unit => ({
       unit: unit,
+      identifier: lineChartDevices[unit].map(states => states[0].entity_id).join(''),
       data: lineChartDevices[unit].map((states) => {
         const last = states[states.length - 1];
         const domain = window.hassUtil.computeDomain(last);
@@ -133,13 +135,13 @@
 
     static get observers() {
       return [
-        'filterChanged(filterType, entityId, startTime, endTime, cacheConfig, localize, language)',
+        'filterChangedDebouncer(filterType, entityId, startTime, endTime, cacheConfig, localize, language)',
       ];
     }
 
     connectedCallback() {
       super.connectedCallback();
-      this.filterChanged(
+      this.filterChangedDebouncer(
         this.filterType, this.entityId, this.startTime, this.endTime,
         this.cacheConfig, this.localize, this.language
       );
@@ -155,11 +157,21 @@
 
     hassChanged(newHass, oldHass) {
       if (!oldHass && !this._madeFirstCall) {
-        this.filterChanged(
+        this.filterChangedDebouncer(
           this.filterType, this.entityId, this.startTime, this.endTime,
           this.cacheConfig, this.localize, this.language
         );
       }
+    }
+
+    filterChangedDebouncer(...args) {
+      this._debounceFilterChanged = Polymer.Debouncer.debounce(
+        this._debounceFilterChanged,
+        Polymer.Async.timeOut.after(0),
+        () => {
+          this.filterChanged(...args);
+        }
+      );
     }
 
     filterChanged(filterType, entityId, startTime, endTime, cacheConfig, localize, language) {
@@ -182,7 +194,6 @@
       } else {
         return;
       }
-
       this._setIsLoading(true);
 
       data.then((stateHistory) => {
@@ -310,7 +321,9 @@
           }
           return cache.data;
         })
-        .catch(() => {
+        .catch((err) => {
+          /* eslint-disable no-console */
+          console.error(err);
           window.stateHistoryCache[cacheKey] = undefined;
         });
       cache.prom = prom;

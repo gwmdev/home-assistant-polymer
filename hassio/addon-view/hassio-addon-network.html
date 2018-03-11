@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 
 <link rel='import' href='../../src/util/hass-mixins.html'>
+<link rel='import' href='../../src/resources/ha-style.html'>
 
 <link rel="import" href="../../src/components/buttons/ha-call-api-button.html">
 
@@ -20,8 +21,8 @@
         margin-bottom: 16px;
       }
       .card-actions {
-        @apply(--layout);
-        @apply(--layout-justified);
+        @apply --layout;
+        @apply --layout-justified;
       }
     </style>
     <paper-card heading='Network'>
@@ -53,7 +54,7 @@
           </template>
         </table>
       </div>
-      <div class="card-actions">        
+      <div class="card-actions">
         <ha-call-api-button
           class='warning'
           hass='[[hass]]'
@@ -61,7 +62,7 @@
           data="[[resetData]]"
         >Reset to defaults</ha-call-api-button>
         <paper-button
-          on-tap='saveTapped'
+          on-click='saveTapped'
         >Save</paper-button>
       </div>
     </paper-card>

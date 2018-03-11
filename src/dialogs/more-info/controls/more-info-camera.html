@@ -1,6 +1,6 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../../bower_components/polymer/polymer-element.html">
 
-<link rel='import' href='../../src/util/hass-mixins.html'>
+<link rel='import' href='../../../../src/util/hass-mixins.html'>
 
 <dom-module id='more-info-camera'>
   <template>
@@ -38,6 +38,16 @@ class MoreInfoCamera extends window.hassMixins.EventsMixin(Polymer.Element) {
         value: true,
       },
     };
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.isVisible = true;
+  }
+
+  disconnectedCallback() {
+    this.isVisible = false;
+    super.disconnectedCallback();
   }
 
   imageLoaded() {

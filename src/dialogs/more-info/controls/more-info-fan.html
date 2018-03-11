@@ -1,15 +1,15 @@
-<link rel='import' href='../../bower_components/polymer/polymer-element.html'>
+<link rel='import' href='../../../../bower_components/polymer/polymer-element.html'>
 
-<link rel='import' href='../../bower_components/iron-flex-layout/iron-flex-layout-classes.html'>
-<link rel='import' href='../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html'>
-<link rel='import' href='../../bower_components/paper-listbox/paper-listbox.html'>
-<link rel='import' href='../../bower_components/paper-item/paper-item.html'>
-<link rel='import' href='../../bower_components/paper-toggle-button/paper-toggle-button.html'>
-<link rel='import' href='../../bower_components/paper-icon-button/paper-icon-button.html'>
+<link rel='import' href='../../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html'>
+<link rel='import' href='../../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html'>
+<link rel='import' href='../../../../bower_components/paper-listbox/paper-listbox.html'>
+<link rel='import' href='../../../../bower_components/paper-item/paper-item.html'>
+<link rel='import' href='../../../../bower_components/paper-toggle-button/paper-toggle-button.html'>
+<link rel='import' href='../../../../bower_components/paper-icon-button/paper-icon-button.html'>
 
-<link rel='import' href='../../src/util/hass-mixins.html'>
+<link rel='import' href='../../../../src/util/hass-mixins.html'>
 
-<link rel="import" href="../components/ha-attributes.html">
+<link rel="import" href="../../../components/ha-attributes.html">
 
 <dom-module id='more-info-fan'>
   <template>
@@ -63,10 +63,10 @@
         <div class='direction'>
           <div>Direction</div>
           <paper-icon-button icon='mdi:rotate-left'
-            on-tap='onDirectionLeft' title='Left'
+            on-click='onDirectionLeft' title='Left'
             disabled='[[computeIsRotatingLeft(stateObj)]]'></paper-icon-button>
           <paper-icon-button icon='mdi:rotate-right'
-            on-tap='onDirectionRight' title='Right'
+            on-click='onDirectionRight' title='Right'
             disabled='[[computeIsRotatingRight(stateObj)]]'></paper-icon-button>
         </div>
       </div>
@@ -104,12 +104,12 @@ class MoreInfoFan extends window.hassMixins.EventsMixin(Polymer.Element) {
   }
 
   stateObjChanged(newVal, oldVal) {
-    this.oscillationToggleChecked = newVal.attributes.oscillating;
-
-    if (newVal.attributes.speed_list) {
-      this.speedIndex = newVal.attributes.speed_list.indexOf(newVal.attributes.speed);
-    } else {
-      this.speedIndex = -1;
+    if (newVal) {
+      this.setProperties({
+        oscillationToggleChecked: newVal.attributes.oscillating,
+        speedIndex: newVal.attributes.speed_list ?
+          newVal.attributes.speed_list.indexOf(newVal.attributes.speed) : -1,
+      });
     }
 
     if (oldVal) {
