@@ -24,3 +24,9 @@ dist
 # Secrets
 .lokalise_token
 yarn-error.log
+
+# VS code
+.vscode/*
+
+#bower
+bower_components/*
