@@ -12,7 +12,8 @@
         "dev-events": "Ereignisse",
         "dev-templates": "Templates",
         "dev-mqtt": "MQTT",
-        "dev-info": "Info"
+        "dev-info": "Info",
+        "calendar": "Kalender"
     },
     "state": {
         "default": {
@@ -236,6 +237,22 @@
                 "initializing": "Initialisiere ({query_stage})",
                 "dead": "Nicht erreichbar ({query_stage})"
             }
+        },
+        "weather": {
+            "clear-night": "Klare Nacht",
+            "cloudy": "Bewölkt",
+            "fog": "Nebel",
+            "hail": "Hagel",
+            "lightning": "Gewitter",
+            "lightning-rainy": "Gewitter, Regnerisch",
+            "partlycloudy": "Teilweise bewölkt",
+            "pouring": "Strömend",
+            "rainy": "Regnerisch",
+            "snowy": "Verschneit",
+            "snowy-rainy": "Verschneit, Regnerisch",
+            "sunny": "Sonnig",
+            "windy": "Windig",
+            "windy-variant": "Windig"
         }
     },
     "state_badge": {
@@ -256,7 +273,7 @@
             "armed_custom_bypass": "Aktiv"
         },
         "device_tracker": {
-            "home": "Daheim",
+            "home": "Z. Hause",
             "not_home": "Abwes."
         }
     },
@@ -282,7 +299,7 @@
             },
             "config": {
                 "header": "Home Assistant konfigurieren",
-                "introduction": "Hier ist es möglich deine Komponenten und Home Assistant zu konfigurieren. Noch ist nicht alles über die GUI einstellbar, aber wir arbeiten daran.",
+                "introduction": "Hier ist es möglich, deine Komponenten und Home Assistant zu konfigurieren. Noch ist nicht alles über die GUI einstellbar, aber wir arbeiten daran.",
                 "core": {
                     "caption": "Allgemein",
                     "description": "Überprüfe deine Konfigurationsdatei und steuer den Server",
@@ -292,7 +309,7 @@
                             "introduction": "Die Konfiguration zu ändern ist ein mühsamer Prozess. Das wissen wir. Dieser Bereich versucht dir das Leben etwas leichter zu gestalten.",
                             "validation": {
                                 "heading": "Konfiguration überprüfen",
-                                "introduction": "Überprüfe deine Konfiguration wenn du kürzlich Änderungen vorgenommen hast und sicherstellen möchtest, dass alles ordnungsgemäß ist",
+                                "introduction": "Überprüfe deine Konfiguration, wenn du kürzlich Änderungen vorgenommen hast und sicherstellen möchtest, dass alles ordnungsgemäß ist",
                                 "check_config": "Konfiguration prüfen",
                                 "valid": "Konfiguration in Ordnung",
                                 "invalid": "Konfiguration fehlerhaft"
@@ -338,7 +355,7 @@
                     "description": "Automatisierungen erstellen und bearbeiten",
                     "picker": {
                         "header": "Automatisierungseditor",
-                        "introduction": "Mit dem Automationseditor können Automatisierungen erstellt und bearbeitet werden. Bitte lies [die Anleitungen](https:\/\/home-assistant.io\/docs\/automation\/editor\/), um sicherzustellen, dass du den Home Assistant richtig konfiguriert hast.",
+                        "introduction": "Mit dem Automationseditor können Automatisierungen erstellt und bearbeitet werden. Bitte lies [die Anleitungen](https:\/\/home-assistant.io\/docs\/automation\/editor\/), um sicherzustellen, dass du Home Assistant richtig konfiguriert hast.",
                         "pick_automation": "Wähle eine Automatisierung zum Bearbeiten",
                         "no_automations": "Wir konnten keine editierbaren Automatisierungen finden",
                         "add_automation": "Automatisierung hinzufügen"
@@ -351,7 +368,7 @@
                         "alias": "Name",
                         "triggers": {
                             "header": "Auslöser",
-                            "introduction": "Auslöser starten automatisierte Abläufe. Es ist mögliche mehrere Auslöser für die selbe Abfolge zu definieren. Wenn ein Auslöser aktiviert wird prüft Home Assistant die Bedingungen, sofern vorhanden, und führt die Aktion aus.\n\n[Erfahre mehr über Auslöser.](https:\/\/home-assistant.io\/docs\/automation\/trigger\/)",
+                            "introduction": "Auslöser starten automatisierte Abläufe. Es ist mögliche, mehrere Auslöser für dieselbe Abfolge zu definieren. Wenn ein Auslöser aktiviert wird, prüft Home Assistant die Bedingungen, sofern vorhanden, und führt die Aktion aus.\n\n[Erfahre mehr über Auslöser.](https:\/\/home-assistant.io\/docs\/automation\/trigger\/)",
                             "add": "Auslöser hinzufügen",
                             "duplicate": "Duplizieren",
                             "delete": "Löschen",
@@ -498,6 +515,20 @@
                 "zwave": {
                     "caption": "Z-Wave",
                     "description": "Z-Wave-Netzwerk verwalten"
+                },
+                "users": {
+                    "caption": "Benutzer",
+                    "description": "Benutzer verwalten",
+                    "picker": {
+                        "title": "Benutzer"
+                    },
+                    "editor": {
+                        "rename_user": "Benutzer umbenennen",
+                        "change_password": "Passwort ändern",
+                        "activate_user": "Benutzer aktivieren",
+                        "deactivate_user": "Benutzer deaktivieren",
+                        "delete_user": "Benutzer löschen"
+                    }
                 }
             }
         },
@@ -512,7 +543,9 @@
         "duration": {
             "day": "{count} {count, plural,\none {Tag}\nother {Tage}\n}",
             "week": "{count} {count, plural,\none {Woche}\nother {Wochen}\n}",
-            "second": "{count} {count, plural,\none {Sekunde}\nother {Sekunden}\n}"
+            "second": "{count} {count, plural,\none {Sekunde}\nother {Sekunden}\n}",
+            "minute": "{count} {count, plural,\none {Minute}\nother {Minuten}\n}",
+            "hour": "{count} {count, plural,\none {Stunde}\nother {Stunden}\n}"
         },
         "login-form": {
             "password": "Passwort",
@@ -525,6 +558,87 @@
             },
             "persistent_notification": {
                 "dismiss": "Ausblenden"
+            },
+            "scene": {
+                "activate": "Aktivieren"
+            },
+            "script": {
+                "execute": "Ausführen"
+            },
+            "weather": {
+                "attributes": {
+                    "air_pressure": "Luftdruck",
+                    "humidity": "Luftfeuchtigkeit",
+                    "temperature": "Temperatur",
+                    "visibility": "Sichtweite",
+                    "wind_speed": "Windgeschwindigkeit"
+                },
+                "cardinal_direction": {
+                    "e": "O",
+                    "ene": "ONO",
+                    "ese": "OSO",
+                    "n": "N",
+                    "ne": "NO",
+                    "nne": "NNO",
+                    "nw": "NW",
+                    "nnw": "NNW",
+                    "s": "S",
+                    "se": "SO",
+                    "sse": "SSO",
+                    "ssw": "SSW",
+                    "sw": "SW",
+                    "w": "W",
+                    "wnw": "WNW",
+                    "wsw": "WSW"
+                },
+                "forecast": "Prognose"
+            },
+            "alarm_control_panel": {
+                "code": "Code",
+                "clear_code": "Löschen",
+                "disarm": "Deaktivieren",
+                "arm_home": "Aktivieren, Zuhause",
+                "arm_away": "Aktivieren, unterwegs"
+            },
+            "automation": {
+                "last_triggered": "Zuletzt ausgelöst",
+                "trigger": "Auslösen"
+            },
+            "cover": {
+                "position": "Position",
+                "tilt_position": "Kippstellung"
+            },
+            "fan": {
+                "speed": "Geschwindigkeit",
+                "oscillate": "Oszillieren",
+                "direction": "Richtung"
+            },
+            "light": {
+                "brightness": "Helligkeit",
+                "color_temperature": "Farbtemperatur",
+                "white_value": "Weißwert",
+                "effect": "Effekt"
+            },
+            "media_player": {
+                "text_to_speak": "Text zum Sprechen",
+                "source": "Quelle",
+                "sound_mode": "Sound-Modus"
+            },
+            "climate": {
+                "currently": "Aktuell",
+                "on_off": "An \/ aus",
+                "target_temperature": "Soll-Temperatur",
+                "target_humidity": "Soll-Luftfeuchtigkeit",
+                "operation": "Aktion",
+                "fan_mode": "Ventilator-Modus",
+                "swing_mode": "Schwenk-Modus",
+                "away_mode": "Abwesenheitsmodus",
+                "aux_heat": "Hilfswärme"
+            },
+            "lock": {
+                "code": "Code",
+                "lock": "Verriegeln",
+                "unlock": "Entriegeln"
             }
         },
         "components": {
@@ -535,6 +649,35 @@
             },
             "service-picker": {
                 "service": "Dienst"
+            },
+            "relative_time": {
+                "past": "Vor {time}",
+                "future": "In {time}",
+                "never": "Noch nie",
+                "duration": {
+                    "second": "{count} {count, plural,\none {Sekunde}\nother {Sekunden}\n}",
+                    "minute": "{count} {count, plural,\none {Minute}\nother {Minuten}\n}",
+                    "hour": "{count} {count, plural,\none {Stunde}\nother {Stunden}\n}",
+                    "day": "{count} {count, plural,\none {Tag}\nother {Tagen}\n}",
+                    "week": "{count} {count, plural,\none {Woche}\nother {Wochen}\n}"
+                }
+            },
+            "history_charts": {
+                "loading_history": "Lade Zustandsverlauf...",
+                "no_history_found": "Kein Zustandsverlauf gefunden."
+            }
+        },
+        "notification_toast": {
+            "entity_turned_on": "{entity} eingeschaltet.",
+            "entity_turned_off": "{entity} ausgeschaltet.",
+            "service_called": "Dienst {service} aufgerufen.",
+            "service_call_failed": "Fehler beim Aufrufen des Service {service}.",
+            "connection_lost": "Verbindung getrennt. Verbinde erneut..."
+        },
+        "dialogs": {
+            "more_info_settings": {
+                "save": "Speichern",
+                "name": "Name"
             }
         }
     },
@@ -556,7 +699,7 @@
         "input_boolean": "Boolsche Eingabe",
         "input_datetime": "Eingabe Datum\/Uhrzeit",
         "input_select": "Auswahlfeld",
-        "input_number": "Nummerische Eingabe",
+        "input_number": "Numerische Eingabe",
         "input_text": "Texteingabe",
         "light": "Licht",
         "lock": "Schloss",

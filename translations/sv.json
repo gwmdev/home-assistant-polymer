@@ -12,7 +12,8 @@
         "dev-events": "Händelser",
         "dev-templates": "Mallar",
         "dev-mqtt": "MQTT",
-        "dev-info": "Info"
+        "dev-info": "Info",
+        "calendar": "Kalender"
     },
     "state": {
         "default": {
@@ -236,6 +237,22 @@
                 "initializing": "Initierar ({query_stage})",
                 "dead": "Död ({query_stage})"
             }
+        },
+        "weather": {
+            "clear-night": "Klart, natt",
+            "cloudy": "Molnigt",
+            "fog": "Dimma",
+            "hail": "Hagel",
+            "lightning": "Åska",
+            "lightning-rainy": "Åska, regnigt",
+            "partlycloudy": "Delvis molnigt",
+            "pouring": "Ösregn",
+            "rainy": "Regnigt",
+            "snowy": "Snöigt",
+            "snowy-rainy": "Snöigt, regnigt",
+            "sunny": "Soligt",
+            "windy": "Blåsigt",
+            "windy-variant": "Blåsigt"
         }
     },
     "state_badge": {
@@ -338,7 +355,7 @@
                     "description": "Skapa och redigera automationer",
                     "picker": {
                         "header": "Automatiseringseditor",
-                        "introduction": "Automatiseringseditorn låter dig skapa och redigera automationer. Läs [instruktionerna] (https:\/\/home-assistant.io\/docs\/automation\/editor\/) för att se till att du har konfigurerat Home Assistant korrekt.",
+                        "introduction": "Automatiseringseditorn låter dig skapa och redigera automationer. Läs [instruktionerna](https:\/\/home-assistant.io\/docs\/automation\/editor\/) för att se till att du har konfigurerat Home Assistant korrekt.",
                         "pick_automation": "Välj automation att redigera",
                         "no_automations": "Vi kunde inte hitta några redigerbara automationer",
                         "add_automation": "Lägg till automatisering"
@@ -371,7 +388,7 @@
                                 },
                                 "homeassistant": {
                                     "label": "Home Assistant",
-                                    "event": "Händelse",
+                                    "event": "Händelse:",
                                     "start": "Starta",
                                     "shutdown": "Stoppa"
                                 },
@@ -512,7 +529,9 @@
         "duration": {
             "day": "{count} {count, plural,\none {dag}\nother {dagar}\n}",
             "week": "{count} {count, plural,\none {vecka}\nother {veckor}\n}",
-            "second": "{count} {count, plural,\nen {sekund}\nflera {sekunder}\n}"
+            "second": "{count} {count, plural,\none {sekund}\nother {sekunder}\n}",
+            "minute": "{count} {count, plural,\n  one {minut}\n  other {minuter}\n}",
+            "hour": "{count} {count, plural,\n  one {timme}\n  other {timmar}\n}"
         },
         "login-form": {
             "password": "Lösenord",
@@ -525,6 +544,87 @@
             },
             "persistent_notification": {
                 "dismiss": "Avfärda"
+            },
+            "scene": {
+                "activate": "Aktivera"
+            },
+            "script": {
+                "execute": "Kör"
+            },
+            "weather": {
+                "attributes": {
+                    "air_pressure": "Lufttryck",
+                    "humidity": "Luftfuktighet",
+                    "temperature": "Temperatur",
+                    "visibility": "Sikt",
+                    "wind_speed": "Vindhastighet"
+                },
+                "cardinal_direction": {
+                    "e": "O",
+                    "ene": "ONO",
+                    "ese": "OSO",
+                    "n": "N",
+                    "ne": "NO",
+                    "nne": "NNO",
+                    "nw": "NV",
+                    "nnw": "NNV",
+                    "s": "S",
+                    "se": "SO",
+                    "sse": "SSO",
+                    "ssw": "SSV",
+                    "sw": "SV",
+                    "w": "V",
+                    "wnw": "VNV",
+                    "wsw": "VSV"
+                },
+                "forecast": "Prognos"
+            },
+            "alarm_control_panel": {
+                "code": "Kod",
+                "clear_code": "Rensa",
+                "disarm": "Larma från",
+                "arm_home": "Larma hemmaläge",
+                "arm_away": "Larma bortaläge"
+            },
+            "automation": {
+                "last_triggered": "Utlöstes senast",
+                "trigger": "Aktivera"
+            },
+            "cover": {
+                "position": "Position",
+                "tilt_position": "Tilt position"
+            },
+            "fan": {
+                "speed": "Hastighet",
+                "oscillate": "Pendlar",
+                "direction": "Riktning"
+            },
+            "light": {
+                "brightness": "Ljusstyrka",
+                "color_temperature": "Färgtemperatur",
+                "white_value": "Vitt värde",
+                "effect": "Effekt"
+            },
+            "media_player": {
+                "text_to_speak": "Text till tal",
+                "source": "Källa",
+                "sound_mode": "Ljudläge"
+            },
+            "climate": {
+                "currently": "För närvarande",
+                "on_off": "På \/ av",
+                "target_temperature": "Måltemperatur",
+                "target_humidity": "Målluftfuktighet",
+                "operation": "Läge",
+                "fan_mode": "Fläktläge",
+                "swing_mode": "Svepläge",
+                "away_mode": "Bortaläge",
+                "aux_heat": "Underhållsvärme"
+            },
+            "lock": {
+                "code": "Kod",
+                "lock": "Lås",
+                "unlock": "Lås upp"
             }
         },
         "components": {
@@ -535,6 +635,28 @@
             },
             "service-picker": {
                 "service": "Tjänst"
+            },
+            "relative_time": {
+                "past": "{time} sedan",
+                "future": "Om {time}",
+                "never": "Aldrig"
+            },
+            "history_charts": {
+                "loading_history": "Laddar historik...",
+                "no_history_found": "Ingen historik hittad."
+            }
+        },
+        "notification_toast": {
+            "entity_turned_on": "Slog på {entity}.",
+            "entity_turned_off": "Stängde av {entity}.",
+            "service_called": "Tjänsten {service} anropad.",
+            "service_call_failed": "Misslyckades med att anropa tjänsten {service}.",
+            "connection_lost": "Anslutning tappad. Ansluter igen..."
+        },
+        "dialogs": {
+            "more_info_settings": {
+                "save": "Spara",
+                "name": "Namn"
             }
         }
     },

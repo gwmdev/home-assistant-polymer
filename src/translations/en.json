@@ -1,11 +1,4 @@
 {
-  "attribute": {
-    "weather": {
-      "humidity": "Humidity",
-      "visibility": "Visibility",
-      "wind_speed": "Wind speed"
-    }
-  },
   "domain": {
     "alarm_control_panel": "Alarm control panel",
     "automation": "Automation",
@@ -40,10 +33,12 @@
     "sun": "Sun",
     "switch": "Switch",
     "updater": "Updater",
+    "vacuum": "Vacuum",
     "weblink": "Weblink",
     "zwave": "Z-Wave"
   },
   "panel": {
+    "calendar": "Calendar",
     "config": "Configuration",
     "states": "Overview",
     "map": "Map",
@@ -272,6 +267,32 @@
       "off": "[%key:state::default::off%]",
       "on": "[%key:state::default::on%]"
     },
+    "vacuum": {
+      "cleaning": "Cleaning",
+      "docked": "Docked",
+      "error": "Error",
+      "idle": "Idle",
+      "off": "[%key:state::default::off%]",
+      "on": "[%key:state::default::on%]",
+      "paused": "Paused",
+      "returning": "Returning to dock"
+    },
+    "weather": {
+      "clear-night": "Clear, night",
+      "cloudy": "Cloudy",
+      "fog": "Fog",
+      "hail": "Hail",
+      "lightning": "Lightning",
+      "lightning-rainy": "Lightning, rainy",
+      "partlycloudy": "Partly cloudy",
+      "pouring": "Pouring",
+      "rainy": "Rainy",
+      "snowy": "Snowy",
+      "snowy-rainy": "Snowy, rainy",
+      "sunny": "Sunny",
+      "windy": "Windy",
+      "windy-variant": "Windy"
+    },
     "zwave": {
       "default": {
         "initializing": "Initializing",
@@ -309,11 +330,101 @@
   },
   "ui": {
     "card": {
+      "alarm_control_panel": {
+        "code": "Code",
+        "clear_code": "Clear",
+        "disarm": "Disarm",
+        "arm_home": "Arm home",
+        "arm_away": "Arm away"
+      },
+      "automation": {
+        "last_triggered": "Last triggered",
+        "trigger": "Trigger"
+      },
       "camera": {
         "not_available": "Image not available"
       },
+      "climate": {
+        "currently": "Currently",
+        "on_off": "On / off",
+        "target_temperature": "Target temperature",
+        "target_humidity": "Target humidity",
+        "operation": "Operation",
+        "fan_mode": "Fan mode",
+        "swing_mode": "Swing mode",
+        "away_mode": "Away mode",
+        "aux_heat": "Aux heat"
+      },
+      "cover": {
+        "position": "Position",
+        "tilt_position": "Tilt position"
+      },
+      "fan": {
+        "speed": "Speed",
+        "oscillate": "Oscillate",
+        "direction": "Direction"
+      },
+      "light": {
+        "brightness": "Brightness",
+        "color_temperature": "Color temperature",
+        "white_value": "White value",
+        "effect": "Effect"
+      },
+      "lock": {
+        "code": "[%key:ui::card::alarm_control_panel::code%]",
+        "lock": "Lock",
+        "unlock": "Unlock"
+      },
+      "media_player": {
+        "source": "Source",
+        "sound_mode": "Sound mode",
+        "text_to_speak": "Text to speak"
+      },
       "persistent_notification": {
         "dismiss": "Dismiss"
+      },
+      "scene": {
+        "activate": "Activate"
+      },
+      "script": {
+        "execute": "Execute"
+      },
+      "vacuum": {
+        "actions": {
+          "resume_cleaning": "Resume cleaning",
+          "return_to_base": "Return to dock",
+          "start_cleaning": "Start cleaning",
+          "turn_on": "Turn on",
+          "turn_off": "Turn off"
+        }
+      },
+      "weather": {
+        "attributes": {
+          "air_pressure": "Air pressure",
+          "humidity": "Humidity",
+          "temperature": "Temperature",
+          "visibility": "Visibility",
+          "wind_speed": "Wind speed"
+        },
+        "cardinal_direction": {
+          "e": "E",
+          "ene": "ENE",
+          "ese": "ESE",
+          "n": "N",
+          "ne": "NE",
+          "nne": "NNE",
+          "nw": "NW",
+          "nnw": "NNW",
+          "s": "S",
+          "se": "SE",
+          "sse": "SSE",
+          "ssw": "SSW",
+          "sw": "SW",
+          "w": "W",
+          "wnw": "WNW",
+          "wsw": "WSW"
+        },
+        "forecast": "Forecast"
       }
     },
     "common": {
@@ -326,12 +437,37 @@
           "entity": "Entity"
         }
       },
+      "relative_time": {
+        "past": "{time} ago",
+        "future": "In {time}",
+        "never": "Never",
+        "duration": {
+          "second": "{count} {count, plural,\n  one {second}\n  other {seconds}\n}",
+          "minute": "{count} {count, plural,\n  one {minute}\n  other {minutes}\n}",
+          "hour": "{count} {count, plural,\n  one {hour}\n  other {hours}\n}",
+          "day": "{count} {count, plural,\n  one {day}\n  other {days}\n}",
+          "week": "{count} {count, plural,\n  one {week}\n  other {weeks}\n}"
+        }
+      },
+      "history_charts": {
+        "loading_history": "Loading state history...",
+        "no_history_found": "No state history found."
+      },
       "service-picker": {
         "service": "Service"
       }
     },
+    "dialogs": {
+      "more_info_settings": {
+        "save": "Save",
+        "name": "Name",
+        "entity_id": "Entity ID"
+      }
+    },
     "duration": {
       "second": "{count} {count, plural,\n  one {second}\n  other {seconds}\n}",
+      "minute": "{count} {count, plural,\n  one {minute}\n  other {minutes}\n}",
+      "hour": "{count} {count, plural,\n  one {hour}\n  other {hours}\n}",
       "day": "{count} {count, plural,\n  one {day}\n  other {days}\n}",
       "week": "{count} {count, plural,\n  one {week}\n  other {weeks}\n}"
     },
@@ -339,6 +475,13 @@
       "password": "Password",
       "remember": "Remember",
       "log_in": "Log in"
+    },
+    "notification_toast": {
+      "entity_turned_on": "Turned on {entity}.",
+      "entity_turned_off": "Turned off {entity}.",
+      "service_called": "Service {service} called.",
+      "service_call_failed": "Failed to call service {service}.",
+      "connection_lost": "Connection lost. Reconnecting…"
     },
     "sidebar": {
       "developer_tools": "Developer tools",
@@ -391,12 +534,6 @@
               "header": "Set a theme",
               "introduction": "Choose 'Backend-selected' to use whatever theme the backend chooses or pick a theme for this device",
               "theme": "Theme"
-            },
-            "hassbian": {
-              "header": "Bring Hassbian to the next level",
-              "introduction": "Discover exciting add-ons to enhance your Home Assistant installation. Add an MQTT server or control a connected TV via HDMI-CEC.",
-              "learn_more": "Learn more",
-              "install": "Install"
             }
           }
         },
@@ -565,6 +702,20 @@
         "script": {
           "caption": "Script",
           "description": "Create and edit scripts"
+        },
+        "users": {
+          "caption": "Users",
+          "description": "Manage users",
+          "picker": {
+            "title": "Users"
+          },
+          "editor": {
+            "rename_user": "Rename user",
+            "change_password": "Change password",
+            "activate_user": "Activate user",
+            "deactivate_user": "Deactivate user",
+            "delete_user": "Delete user"
+          }
         },
         "zwave": {
           "caption": "Z-Wave",

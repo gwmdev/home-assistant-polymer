@@ -4,7 +4,7 @@
         "states": "둘러보기",
         "map": "지도",
         "logbook": "로그북",
-        "history": "상태변화",
+        "history": "히스토리",
         "mailbox": "메일함",
         "shopping_list": "장보기목록",
         "dev-services": "서비스",
@@ -12,7 +12,8 @@
         "dev-events": "이벤트",
         "dev-templates": "템플릿",
         "dev-mqtt": "MQTT",
-        "dev-info": "정보"
+        "dev-info": "정보",
+        "calendar": "캘린더"
     },
     "state": {
         "default": {
@@ -153,7 +154,7 @@
             "opening": "여는중",
             "closed": "닫힘",
             "closing": "닫는중",
-            "stopped": "정지됨"
+            "stopped": "멈춤"
         },
         "device_tracker": {
             "home": "재실",
@@ -172,7 +173,7 @@
             "opening": "여는중",
             "closed": "닫힘",
             "closing": "닫는중",
-            "stopped": "정지됨",
+            "stopped": "멈춤",
             "locked": "잠김",
             "unlocked": "해제",
             "ok": "좋음",
@@ -236,6 +237,22 @@
                 "initializing": "초기화중 ({query_stage})",
                 "dead": "응답없음 ({query_stage})"
             }
+        },
+        "weather": {
+            "clear-night": "맑은 밤",
+            "cloudy": "흐림",
+            "fog": "안개",
+            "hail": "우박",
+            "lightning": "번개",
+            "lightning-rainy": "뇌우",
+            "partlycloudy": "대체로 흐림",
+            "pouring": "호우",
+            "rainy": "비",
+            "snowy": "눈",
+            "snowy-rainy": "진눈개비",
+            "sunny": "맑음",
+            "windy": "바람",
+            "windy-variant": "잦은바람"
         }
     },
     "state_badge": {
@@ -265,7 +282,7 @@
             "shopping-list": {
                 "clear_completed": "완료항목삭제",
                 "add_item": "항목추가",
-                "microphone_tip": "우상단 마이크를 탭하고 \"Add candy to my shopping list\"라고 말하세요"
+                "microphone_tip": "우상단 마이크를 탭하고 \"Add candy to my shopping list\"라고 말해보세요"
             },
             "history": {
                 "showing_entries": "다음 날짜의 항목을 표시",
@@ -338,8 +355,8 @@
                     "description": "자동화를 만들고 편집합니다",
                     "picker": {
                         "header": "자동화 편집기",
-                        "introduction": "자동화 편집기를 사용하여 자동화를 작성하고 편집 할 수 있습니다. [안내] (https:\/\/home-assistant.io\/docs\/automation\/editor\/)를 읽고 Home Assistant 를 올바르게 구성했는지 확인해보세요.",
-                        "pick_automation": "편집 할 자동화 선택",
+                        "introduction": "자동화 편집기를 사용하여 자동화를 작성하고 편집 할 수 있습니다. [안내](https:\/\/home-assistant.io\/docs\/automation\/editor\/) 를 읽고 Home Assistant 를 올바르게 구성했는지 확인해보세요.",
+                        "pick_automation": "편집할 자동화 선택",
                         "no_automations": "편집 가능한 자동화를 찾을 수 없습니다",
                         "add_automation": "자동화 추가하기"
                     },
@@ -351,7 +368,7 @@
                         "alias": "이름",
                         "triggers": {
                             "header": "트리거",
-                            "introduction": "트리거는 자동화 규칙을 처리하는 시작점 입니다. 같은 자동화 규칙에 여러 개의 트리거를 지정할 수 있습니다. 트리거가 발동되면 Home Assistant는 조건을 확인하고 동작을 호출합니다. \n\n [트리거에 대해 자세히 알아보기] (https:\/\/home-assistant.io\/docs\/automation\/trigger\/)",
+                            "introduction": "트리거는 자동화 규칙을 처리하는 시작점 입니다. 같은 자동화 규칙에 여러 개의 트리거를 지정할 수 있습니다. 트리거가 발동되면 Home Assistant는 조건을 확인하고 동작을 호출합니다. \n\n [트리거에 대해 자세히 알아보기](https:\/\/home-assistant.io\/docs\/automation\/trigger\/)",
                             "add": "트리거 추가",
                             "duplicate": "복제",
                             "delete": "삭제",
@@ -381,10 +398,10 @@
                                     "payload": "페이로드 (선택 사항)"
                                 },
                                 "numeric_state": {
-                                    "label": "숫자 상태",
+                                    "label": "수치 상태",
                                     "above": "이상",
                                     "below": "이하",
-                                    "value_template": "템플릿 값 (선택 사항)"
+                                    "value_template": "값 템플릿 (선택 사항)"
                                 },
                                 "sun": {
                                     "label": "태양",
@@ -395,16 +412,16 @@
                                 },
                                 "template": {
                                     "label": "템플릿",
-                                    "value_template": "템플릿 값"
+                                    "value_template": "값 템플릿"
                                 },
                                 "time": {
                                     "label": "시간",
                                     "at": "시각"
                                 },
                                 "zone": {
-                                    "label": "지역",
+                                    "label": "구역",
                                     "entity": "위치기반 구성요소",
-                                    "zone": "지역",
+                                    "zone": "구역",
                                     "event": "이벤트:",
                                     "enter": "입장",
                                     "leave": "퇴장"
@@ -413,7 +430,7 @@
                         },
                         "conditions": {
                             "header": "조건",
-                            "introduction": "조건은 자동화 규칙의 선택사항이며 트리거 될 때 발생하는 동작을 방지하는 데 사용할 수 있습니다. 조건은 트리거와 비슷해 보이지만 매우 다릅니다. 트리거는 시스템에서 발생하는 이벤트를 검사하고 조건은 시스템의 현재 상태를 검사합니다. 스위치를 예로 들면, 트리거는 스위치가 켜지는 것(이벤트)을, 조건은 스위치가 현재 켜져 있는지 혹은 꺼져 있는지(상태)를 검사합니다. \n\n [조건에 대해 자세히 알아보기] (https:\/\/home-assistant.io\/docs\/scripts\/conditions\/)",
+                            "introduction": "조건은 자동화 규칙의 선택사항이며 트리거 될 때 발생하는 동작을 방지하는 데 사용할 수 있습니다. 조건은 트리거와 비슷해 보이지만 매우 다릅니다. 트리거는 시스템에서 발생하는 이벤트를 검사하고 조건은 시스템의 현재 상태를 검사합니다. 스위치를 예로 들면, 트리거는 스위치가 켜지는 것(이벤트)을, 조건은 스위치가 현재 켜져 있는지 혹은 꺼져 있는지(상태)를 검사합니다. \n\n [조건에 대해 자세히 알아보기](https:\/\/home-assistant.io\/docs\/scripts\/conditions\/)",
                             "add": "조건 추가",
                             "duplicate": "복제",
                             "delete": "삭제",
@@ -426,10 +443,10 @@
                                     "state": "상태"
                                 },
                                 "numeric_state": {
-                                    "label": "숫자 상태",
+                                    "label": "수치 상태",
                                     "above": "이상",
                                     "below": "이하",
-                                    "value_template": "템플릿 값 (선택 사항)"
+                                    "value_template": "값 템플릿 (선택 사항)"
                                 },
                                 "sun": {
                                     "label": "태양",
@@ -442,7 +459,7 @@
                                 },
                                 "template": {
                                     "label": "템플릿",
-                                    "value_template": "템플릿 값"
+                                    "value_template": "값 템플릿"
                                 },
                                 "time": {
                                     "label": "시간",
@@ -450,15 +467,15 @@
                                     "before": "이전"
                                 },
                                 "zone": {
-                                    "label": "지역",
+                                    "label": "구역",
                                     "entity": "위치기반 구성요소",
-                                    "zone": "지역"
+                                    "zone": "구역"
                                 }
                             }
                         },
                         "actions": {
                             "header": "동작",
-                            "introduction": "동작은 자동화가 트리거 될 때 Home Assistant가 수행할 작업입니다.\n\n [동작에 대해 자세히 알아보기] (https:\/\/home-assistant.io\/docs\/automation\/action\/)",
+                            "introduction": "동작은 자동화가 트리거 될 때 Home Assistant가 수행할 작업입니다.\n\n [동작에 대해 자세히 알아보기](https:\/\/home-assistant.io\/docs\/automation\/action\/)",
                             "add": "동작 추가",
                             "duplicate": "복제",
                             "delete": "삭제",
@@ -498,6 +515,20 @@
                 "zwave": {
                     "caption": "Z-Wave",
                     "description": "Z-Wave 네트워크를 관리합니다"
+                },
+                "users": {
+                    "caption": "사용자",
+                    "description": "사용자 관리",
+                    "picker": {
+                        "title": "사용자"
+                    },
+                    "editor": {
+                        "rename_user": "사용자 이름 변경",
+                        "change_password": "비밀번호 변경",
+                        "activate_user": "사용자 활성화",
+                        "deactivate_user": "사용자 비활성화",
+                        "delete_user": "사용자 삭제"
+                    }
                 }
             }
         },
@@ -512,7 +543,9 @@
         "duration": {
             "day": "{count} {count, plural,\none {일}\nother {일}\n}",
             "week": "{count} {count, plural,\none {주}\nother {주}\n}",
-            "second": "{count} {count, plural,\none {초}\nother {초}\n}"
+            "second": "{count} {count, plural,\none {초}\nother {초}\n}",
+            "minute": "{count} {count, plural,\none {분}\nother {분}\n}",
+            "hour": "{count} {count, plural,\none {시간}\nother {시간}\n}"
         },
         "login-form": {
             "password": "비밀번호",
@@ -525,6 +558,87 @@
             },
             "persistent_notification": {
                 "dismiss": "해제"
+            },
+            "scene": {
+                "activate": "활성화"
+            },
+            "script": {
+                "execute": "실행"
+            },
+            "weather": {
+                "attributes": {
+                    "air_pressure": "기압",
+                    "humidity": "습도",
+                    "temperature": "기온",
+                    "visibility": "시정",
+                    "wind_speed": "풍속"
+                },
+                "cardinal_direction": {
+                    "e": "동",
+                    "ene": "동북동",
+                    "ese": "동남동",
+                    "n": "북",
+                    "ne": "북동",
+                    "nne": "북북동",
+                    "nw": "북서",
+                    "nnw": "북북서",
+                    "s": "남",
+                    "se": "남동",
+                    "sse": "남남동",
+                    "ssw": "남남서",
+                    "sw": "남서",
+                    "w": "서",
+                    "wnw": "서북서",
+                    "wsw": "서남서"
+                },
+                "forecast": "일기 예보"
+            },
+            "alarm_control_panel": {
+                "code": "비밀번호",
+                "clear_code": "지움",
+                "disarm": "경비 해제",
+                "arm_home": "재실 경비",
+                "arm_away": "외출 경비"
+            },
+            "automation": {
+                "last_triggered": "최근 트리거 됨",
+                "trigger": "트리거"
+            },
+            "cover": {
+                "position": "위치",
+                "tilt_position": "기울기"
+            },
+            "fan": {
+                "speed": "속도",
+                "oscillate": "회전",
+                "direction": "방향"
+            },
+            "light": {
+                "brightness": "밝기",
+                "color_temperature": "색온도",
+                "white_value": "흰색 값",
+                "effect": "효과"
+            },
+            "media_player": {
+                "text_to_speak": "음성합성 내용 입력 (TTS)",
+                "source": "입력 소스",
+                "sound_mode": "사운드 모드"
+            },
+            "climate": {
+                "currently": "현재 온도",
+                "on_off": "켜기 \/ 끄기",
+                "target_temperature": "희망 온도",
+                "target_humidity": "희망 습도",
+                "operation": "운전 모드",
+                "fan_mode": "송풍 모드",
+                "swing_mode": "회전 모드",
+                "away_mode": "외출 모드",
+                "aux_heat": "보조 히터"
+            },
+            "lock": {
+                "code": "비밀번호",
+                "lock": "잠금",
+                "unlock": "잠금 해제"
             }
         },
         "components": {
@@ -535,6 +649,36 @@
             },
             "service-picker": {
                 "service": "서비스"
+            },
+            "relative_time": {
+                "past": "{time} 전",
+                "future": "{time} 후",
+                "never": "해당없음",
+                "duration": {
+                    "second": "{count} {count, plural,\none {초}\nother {초}\n}",
+                    "minute": "{count} {count, plural,\none {분}\nother {분}\n}",
+                    "hour": "{count} {count, plural,\none {시간}\nother {시간}\n}",
+                    "day": "{count} {count, plural,\none {일}\nother {일}\n}",
+                    "week": "{count} {count, plural,\none {주}\nother {주}\n}"
+                }
+            },
+            "history_charts": {
+                "loading_history": "히스토리 읽는 중...",
+                "no_history_found": "히스토리 내용이 없습니다."
+            }
+        },
+        "notification_toast": {
+            "entity_turned_on": " {entity}이(가) 켜졌습니다.",
+            "entity_turned_off": " {entity}이(가) 꺼졌습니다.",
+            "service_called": "{service} 서비스가 호출되었습니다.",
+            "service_call_failed": "{service} 서비스를 호출하지 못했습니다.",
+            "connection_lost": "서버와 연결이 끊어졌습니다. 다시 연결 중..."
+        },
+        "dialogs": {
+            "more_info_settings": {
+                "save": "저장",
+                "name": "이름",
+                "entity_id": "구성요소 ID"
             }
         }
     },
@@ -547,7 +691,7 @@
         "climate": "공조장치",
         "configurator": "구성",
         "conversation": "대화",
-        "cover": "커버",
+        "cover": "여닫이",
         "device_tracker": "추적장치",
         "fan": "송풍기",
         "history_graph": "기록그래프",
@@ -578,7 +722,7 @@
     "attribute": {
         "weather": {
             "humidity": "습도",
-            "visibility": "가시성",
+            "visibility": "시정",
             "wind_speed": "풍속"
         }
     }

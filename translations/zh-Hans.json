@@ -12,7 +12,8 @@
         "dev-events": "事件",
         "dev-templates": "模板",
         "dev-mqtt": "MQTT",
-        "dev-info": "信息"
+        "dev-info": "信息",
+        "calendar": "日历"
     },
     "state": {
         "default": {
@@ -239,6 +240,22 @@
                 "initializing": "初始化 ({query_stage})",
                 "dead": "断线 ({query_stage})"
             }
+        },
+        "weather": {
+            "clear-night": "夜间晴朗",
+            "cloudy": "多云",
+            "fog": "雾",
+            "hail": "冰雹",
+            "lightning": "雷电",
+            "lightning-rainy": "雷阵雨",
+            "partlycloudy": "局部多云",
+            "pouring": "暴雨",
+            "rainy": "雨",
+            "snowy": "雪",
+            "snowy-rainy": "雨夹雪",
+            "sunny": "晴",
+            "windy": "有风",
+            "windy-variant": "有风"
         }
     },
     "state_badge": {
@@ -348,7 +365,7 @@
                     },
                     "editor": {
                         "introduction": "使用自动化让你的家聪明起来",
-                        "default_name": "新自动化实例",
+                        "default_name": "新建自动化",
                         "save": "保存",
                         "unsaved_confirm": "有更改尚未保存，确定离开页面吗？",
                         "alias": "名称",
@@ -417,7 +434,7 @@
                         "conditions": {
                             "header": "环境条件",
                             "introduction": "环境条件是自动化流程中的可选条件，可用于避免触发条件满足时动作的执行。环境条件看似像触发条件实则大有不同。触发条件监测系统中事件的发生，也就是瞬时动作；而环境条件监测的是系统的状态。例如，“灯被打开”这个事件属于触发条件，“灯是开着的”这个状态就属于环境条件。\n\n[了解更多内容](https:\/\/home-assistant.io\/docs\/scripts\/conditions\/)",
-                            "add": "添加条件",
+                            "add": "添加环境条件",
                             "duplicate": "复制",
                             "delete": "删除",
                             "delete_confirm": "确认删除？",
@@ -501,6 +518,20 @@
                 "zwave": {
                     "caption": "Z-Wave",
                     "description": "管理 Z-Wave 网络"
+                },
+                "users": {
+                    "caption": "用户",
+                    "description": "管理用户",
+                    "picker": {
+                        "title": "用户"
+                    },
+                    "editor": {
+                        "rename_user": "重命名用户",
+                        "change_password": "更改密码",
+                        "activate_user": "激活用户",
+                        "deactivate_user": "停用用户",
+                        "delete_user": "删除用户"
+                    }
                 }
             }
         },
@@ -515,7 +546,9 @@
         "duration": {
             "day": "{count} {count, plural,\none {天}\nother {天}\n}",
             "week": "{count} {count, plural,\none {周}\nother {周}\n}",
-            "second": "{count} {count, plural,\none {秒}\nother {秒}\n}"
+            "second": "{count} {count, plural,\none {秒}\nother {秒}\n}",
+            "minute": "{count} {count, plural,\none {分钟}\nother {分钟}\n}",
+            "hour": "{count} {count, plural,\none {小时}\nother {小时}\n}"
         },
         "login-form": {
             "password": "密码",
@@ -528,16 +561,127 @@
             },
             "persistent_notification": {
                 "dismiss": "忽略"
+            },
+            "scene": {
+                "activate": "激活"
+            },
+            "script": {
+                "execute": "执行"
+            },
+            "weather": {
+                "attributes": {
+                    "air_pressure": "气压",
+                    "humidity": "湿度",
+                    "temperature": "温度",
+                    "visibility": "能见度",
+                    "wind_speed": "风速"
+                },
+                "cardinal_direction": {
+                    "e": "东",
+                    "ene": "东北偏东",
+                    "ese": "东南偏东",
+                    "n": "北",
+                    "ne": "东北",
+                    "nne": "东北偏北",
+                    "nw": "西北",
+                    "nnw": "西北偏北",
+                    "s": "南",
+                    "se": "东南",
+                    "sse": "东南偏南",
+                    "ssw": "西南偏南",
+                    "sw": "西南",
+                    "w": "西",
+                    "wnw": "西北偏西",
+                    "wsw": "西南偏西"
+                },
+                "forecast": "预报"
+            },
+            "alarm_control_panel": {
+                "code": "密码",
+                "clear_code": "清除",
+                "disarm": "解除警戒",
+                "arm_home": "在家警戒",
+                "arm_away": "离家警戒"
+            },
+            "automation": {
+                "last_triggered": "上次触发",
+                "trigger": "触发"
+            },
+            "cover": {
+                "position": "位置",
+                "tilt_position": "倾斜位置"
+            },
+            "fan": {
+                "speed": "风速",
+                "oscillate": "摇头",
+                "direction": "方向"
+            },
+            "light": {
+                "brightness": "亮度",
+                "color_temperature": "色温",
+                "white_value": "白度值",
+                "effect": "效果"
+            },
+            "media_player": {
+                "text_to_speak": "要朗读的文本",
+                "source": "信号源",
+                "sound_mode": "声音模式"
+            },
+            "climate": {
+                "currently": "当前",
+                "on_off": "开\/关",
+                "target_temperature": "设定温度",
+                "target_humidity": "设定湿度",
+                "operation": "运行模式",
+                "fan_mode": "风速",
+                "swing_mode": "扫风模式",
+                "away_mode": "离开模式",
+                "aux_heat": "辅热"
+            },
+            "lock": {
+                "code": "密码",
+                "lock": "锁定",
+                "unlock": "解锁"
             }
         },
         "components": {
             "entity": {
                 "entity-picker": {
-                    "entity": "设备"
+                    "entity": "设备\/实体"
                 }
             },
             "service-picker": {
                 "service": "服务"
+            },
+            "relative_time": {
+                "past": "{time}前",
+                "future": "{time}后",
+                "never": "从未",
+                "duration": {
+                    "second": "{count} {count, plural,\n  one {秒}\n  other {秒}\n}",
+                    "minute": "{count} {count, plural,\n  one {分钟}\n  other {分钟}\n}",
+                    "hour": "{count} {count, plural,\n  one {小时}\n  other {小时}\n}",
+                    "day": "{count} {count, plural,\n  one {天}\n  other {天}\n}",
+                    "week": "{count} {count, plural,\n  one {周}\n  other {周}\n}"
+                }
+            },
+            "history_charts": {
+                "loading_history": "正在加载历史状态...",
+                "no_history_found": "没有找到历史状态。"
+            }
+        },
+        "notification_toast": {
+            "entity_turned_on": "已打开 {entity}。",
+            "entity_turned_off": "已关闭 {entity}。",
+            "service_called": "服务 {service} 已调用。 ",
+            "service_call_failed": "调用服务 {service} 失败。",
+            "connection_lost": "连接中断。正在重新连接..."
+        },
+        "dialogs": {
+            "more_info_settings": {
+                "save": "保存",
+                "name": "名称",
+                "entity_id": "设备\/实体 ID"
             }
         }
     },

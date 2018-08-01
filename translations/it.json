@@ -12,7 +12,8 @@
         "dev-events": "Eventi",
         "dev-templates": "Modelli",
         "dev-mqtt": "MQTT",
-        "dev-info": "Informazioni"
+        "dev-info": "Informazioni",
+        "calendar": "Calendario"
     },
     "state": {
         "default": {
@@ -157,7 +158,7 @@
         },
         "device_tracker": {
             "home": "A casa",
-            "not_home": "Fuori Casa"
+            "not_home": "Fuori"
         },
         "fan": {
             "off": "Spento",
@@ -167,7 +168,7 @@
             "off": "Spento",
             "on": "Acceso",
             "home": "A casa",
-            "not_home": "Fuori casa",
+            "not_home": "Fuori",
             "open": "Aperto",
             "opening": "Apertura",
             "closed": "Chiuso",
@@ -236,6 +237,22 @@
                 "initializing": "Inizializzazione ({query_stage})",
                 "dead": "Terminato ({query_stage})"
             }
+        },
+        "weather": {
+            "clear-night": "Sereno, notte",
+            "cloudy": "Nuvoloso",
+            "fog": "Nebbia",
+            "hail": "Grandine",
+            "lightning": "Temporali",
+            "lightning-rainy": "Temporali, piovoso",
+            "partlycloudy": "Parzialmente nuvoloso",
+            "pouring": "Piogge intense",
+            "rainy": "Piovoso",
+            "snowy": "Nevoso",
+            "snowy-rainy": "Nevoso, piovoso",
+            "sunny": "Soleggiato",
+            "windy": "Ventoso",
+            "windy-variant": "Ventoso"
         }
     },
     "state_badge": {
@@ -265,7 +282,7 @@
             "shopping-list": {
                 "clear_completed": "Pulizia completata",
                 "add_item": "Aggiungi articolo",
-                "microphone_tip": "Tocca il microfono in alto a destra e dì \"Add candy to my shopping list\""
+                "microphone_tip": "Tocca il microfono in alto a destra e dì \"Aggiungi caramelle alla mia lista della spesa\""
             },
             "history": {
                 "showing_entries": "Mostra registrazioni per",
@@ -338,20 +355,20 @@
                     "description": "Crea e modifica automazioni",
                     "picker": {
                         "header": "Editor automazione",
-                        "introduction": "L'editor di automazione consente di creare e modificare automazioni. Per favore leggi [le istruzioni] (https:\/\/home-assistant.io\/docs\/automation\/editor\/) per assicurarti di aver configurato correttamente Home Assistant.",
+                        "introduction": "L'editor di automazione consente di creare e modificare automazioni. Per favore leggi [le istruzioni](https:\/\/home-assistant.io\/docs\/automation\/editor\/) per assicurarti di aver configurato correttamente Home Assistant.",
                         "pick_automation": "Scegli l'automazione da modificare",
-                        "no_automations": "Nessuna automazioni modificabili trovata",
+                        "no_automations": "Nessuna automazione modificabile trovata",
                         "add_automation": "Aggiungi automazione"
                     },
                     "editor": {
                         "introduction": "Usa le automazioni per rendere viva la tua casa",
                         "default_name": "Nuova automazione",
                         "save": "Salva",
-                        "unsaved_confirm": "Hai modifiche non salvate. Sei sicuro di voler uscire?",
+                        "unsaved_confirm": "Hai delle modifiche non salvate. Sei sicuro di voler uscire?",
                         "alias": "Nome",
                         "triggers": {
                             "header": "Triggers",
-                            "introduction": "I trigger sono ciò che avvia l'elaborazione di una regola di automazione. È possibile specificare più trigger per la stessa regola. Una volta avviato il trigger, Home Assistant convaliderà le condizioni, se presenti, e chiamerà l'azione. \n\n [Ulteriori informazioni sui trigger.] (Https:\/\/home-assistant.io\/docs\/automation\/trigger\/)",
+                            "introduction": "I trigger sono ciò che avvia l'elaborazione di una regola di automazione. È possibile specificare più trigger per la stessa regola. Una volta avviato il trigger, Home Assistant convaliderà le condizioni, se presenti, e chiamerà l'azione. \n\n [Ulteriori informazioni sui trigger.](Https:\/\/home-assistant.io\/docs\/automation\/trigger\/)",
                             "add": "Aggiungi trigger",
                             "duplicate": "Duplica",
                             "delete": "Cancella",
@@ -383,7 +400,7 @@
                                 "numeric_state": {
                                     "label": "Valore numerico",
                                     "above": "Superiore",
-                                    "below": "Inferiorre",
+                                    "below": "Inferiore",
                                     "value_template": "Valore modello (opzionale)"
                                 },
                                 "sun": {
@@ -412,13 +429,13 @@
                             }
                         },
                         "conditions": {
-                            "header": "condizioni",
-                            "introduction": "Le condizioni sono una parte facoltativa di una regola di automazione e possono essere utilizzate per impedire che un'azione si verifichi quando viene attivata. Le condizioni sembrano molto simili ai trigger, ma sono molto diverse. Un trigger analizzerà gli eventi che si verificano nel sistema mentre una condizione analizza solo l'aspetto del sistema in questo momento. Un trigger può osservare che un interruttore è in fase di accensione. Una condizione può vedere solo se un interruttore è attivo o meno. \n\n [Ulteriori informazioni sulle condizioni.] (Https:\/\/home-assistant.io\/docs\/scripts\/conditions\/)",
+                            "header": "Condizioni",
+                            "introduction": "Le condizioni sono una parte facoltativa di una regola di automazione e possono essere utilizzate per impedire che un'azione si verifichi quando viene attivata. Le condizioni sembrano molto simili ai trigger, ma sono molto diverse. Un trigger analizzerà gli eventi che si verificano nel sistema mentre una condizione analizza solo l'aspetto del sistema in questo momento. Un trigger può osservare che un interruttore è in fase di accensione. Una condizione può vedere solo se un interruttore è attivo o meno. \n\n [Ulteriori informazioni sulle condizioni.](Https:\/\/home-assistant.io\/docs\/scripts\/conditions\/)",
                             "add": "Aggiungi condizione",
                             "duplicate": "Duplica",
                             "delete": "Cancella",
                             "delete_confirm": "Sicuro di voler eliminare?",
-                            "unsupported_condition": "Condizione non supportata: {conditione}",
+                            "unsupported_condition": "Condizione non supportata: {condition}",
                             "type_select": "Tipo di condizione",
                             "type": {
                                 "state": {
@@ -426,10 +443,10 @@
                                     "state": "Stato"
                                 },
                                 "numeric_state": {
-                                    "label": "valore numerico",
+                                    "label": "Valore numerico",
                                     "above": "Superiore",
                                     "below": "Inferiore",
-                                    "value_template": "valore modello (opzionale)"
+                                    "value_template": "Valore modello (opzionale)"
                                 },
                                 "sun": {
                                     "label": "Sole",
@@ -458,12 +475,12 @@
                         },
                         "actions": {
                             "header": "Azioni",
-                            "introduction": "Le azioni sono ciò che Home Assistant farà quando un trigger attiva un automazione. \n\n [Ulteriori informazioni sulle azioni.] (Https:\/\/home-assistant.io\/docs\/automation\/action\/)",
+                            "introduction": "Le azioni sono ciò che Home Assistant farà quando un trigger attiva un automazione. \n\n [Ulteriori informazioni sulle azioni.](Https:\/\/home-assistant.io\/docs\/automation\/action\/)",
                             "add": "Aggiungi azione",
                             "duplicate": "Duplica",
-                            "delete": "cancella",
+                            "delete": "Cancella",
                             "delete_confirm": "Sicuro di voler eliminare?",
-                            "unsupported_action": "Azione non supportata: {azione}",
+                            "unsupported_action": "Azione non supportata: {action}",
                             "type_select": "Tipo di azione",
                             "type": {
                                 "service": {
@@ -483,7 +500,7 @@
                                     "label": "Condizione"
                                 },
                                 "event": {
-                                    "label": "Evento incendio",
+                                    "label": "Scatena Evento",
                                     "event": "Evento:",
                                     "service_data": "Dato servizio"
                                 }
@@ -498,6 +515,20 @@
                 "zwave": {
                     "caption": "Z-Wave",
                     "description": "Gestisci la tua rete Z-Wave"
+                },
+                "users": {
+                    "caption": "utenti",
+                    "description": "Gestisci gli utenti",
+                    "picker": {
+                        "title": "utenti"
+                    },
+                    "editor": {
+                        "rename_user": "Rinomina utente",
+                        "change_password": "Cambia password",
+                        "activate_user": "Attiva utente",
+                        "deactivate_user": "Disattiva utente",
+                        "delete_user": "Elimina utente"
+                    }
                 }
             }
         },
@@ -512,7 +543,9 @@
         "duration": {
             "day": "{count} {count, plural,\none {giorno}\nother {giorni}\n}",
             "week": "{count} {count, plural,\none {settimana}\nother {settimane}\n}",
-            "second": "{count} {count, plural,\none {secondo}\nother {secondi}\n}"
+            "second": "{count} {count, plural,\none {secondo}\nother {secondi}\n}",
+            "minute": "{count} {count, plural,\none {minuto}\nother {minuti}\n}",
+            "hour": "{count} {count, plural,\none {ora}\nother {ore}\n}"
         },
         "login-form": {
             "password": "Password",
@@ -525,6 +558,87 @@
             },
             "persistent_notification": {
                 "dismiss": "Rimuovi"
+            },
+            "scene": {
+                "activate": "Attiva"
+            },
+            "script": {
+                "execute": "Esegui"
+            },
+            "weather": {
+                "attributes": {
+                    "air_pressure": "Pressione atmosferica",
+                    "humidity": "Umidità",
+                    "temperature": "Temperatura",
+                    "visibility": "Visibilità",
+                    "wind_speed": "Velocità del vento"
+                },
+                "cardinal_direction": {
+                    "e": "E",
+                    "ene": "ENE",
+                    "ese": "ESE",
+                    "n": "N",
+                    "ne": "NE",
+                    "nne": "NNE",
+                    "nw": "NW",
+                    "nnw": "NNW",
+                    "s": "S",
+                    "se": "SE",
+                    "sse": "SSE",
+                    "ssw": "SSW",
+                    "sw": "SW",
+                    "w": "W",
+                    "wnw": "WNW",
+                    "wsw": "WSW"
+                },
+                "forecast": "Previsioni"
+            },
+            "alarm_control_panel": {
+                "code": "Codice",
+                "clear_code": "Canc",
+                "disarm": "Disattivato",
+                "arm_home": "Attivo in casa",
+                "arm_away": "Attiva Fuori Casa"
+            },
+            "automation": {
+                "last_triggered": "Ultima attivazione",
+                "trigger": "Attiva"
+            },
+            "cover": {
+                "position": "Posizione",
+                "tilt_position": "Inclinazione"
+            },
+            "fan": {
+                "speed": "Velocità",
+                "oscillate": "Oscillante",
+                "direction": "Direzione"
+            },
+            "light": {
+                "brightness": "Luminosità",
+                "color_temperature": "Temperatura colore",
+                "white_value": "Valore bianco",
+                "effect": "Effetto"
+            },
+            "media_player": {
+                "text_to_speak": "Testo da leggere",
+                "source": "Fonte",
+                "sound_mode": "Modalità Audio"
+            },
+            "climate": {
+                "currently": "Attuale",
+                "on_off": "Acceso \/ Spento",
+                "target_temperature": "Temperatura di riferimento",
+                "target_humidity": "Umidità di riferimento",
+                "operation": "Operazione",
+                "fan_mode": "Ventilazione",
+                "swing_mode": "Modo oscillazione",
+                "away_mode": "Modalità Assente",
+                "aux_heat": "Riscaldamento ausiliario"
+            },
+            "lock": {
+                "code": "Codice",
+                "lock": "Blocco",
+                "unlock": "Sbloccato"
             }
         },
         "components": {
@@ -535,6 +649,36 @@
             },
             "service-picker": {
                 "service": "Servizio"
+            },
+            "relative_time": {
+                "past": "{time} fa",
+                "future": "mancano {time}",
+                "never": "Mai",
+                "duration": {
+                    "second": "{count} {count, plural,\none {secondo}\nother {secondi}\n}",
+                    "minute": "{count} {count, plural,\none {minuto}\nother {minuti}\n}",
+                    "hour": "{count} {count, plural,\none {ora}\nother {ore}\n}",
+                    "day": "{count} {count, plural,\none {giorno}\nother {giorni}\n}",
+                    "week": "{count} {count, plural,\none {settimana}\nother {settimane}\n}"
+                }
+            },
+            "history_charts": {
+                "loading_history": "Caricamento storico",
+                "no_history_found": "Nesuno storico trovato"
+            }
+        },
+        "notification_toast": {
+            "entity_turned_on": "Accesa {entity}.",
+            "entity_turned_off": "Spenta {entity}.",
+            "service_called": "Servizio {service} chiamato.",
+            "service_call_failed": "Fallita chiamata a servizio {service} .",
+            "connection_lost": "Connessione persa. Riconnessione..."
+        },
+        "dialogs": {
+            "more_info_settings": {
+                "save": "Salve",
+                "name": "Nome",
+                "entity_id": "ID Entità"
             }
         }
     },
@@ -547,7 +691,7 @@
         "climate": "Termostato",
         "configurator": "Configuratore",
         "conversation": "Conversazione",
-        "cover": "Copertura",
+        "cover": "Tapparella",
         "device_tracker": "Tracking dispositivo",
         "fan": "Ventilatore",
         "history_graph": "Storico",

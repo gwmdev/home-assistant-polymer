@@ -12,7 +12,8 @@
         "dev-events": "Zdarzenia",
         "dev-templates": "Szablony",
         "dev-mqtt": "MQTT",
-        "dev-info": "Informacje"
+        "dev-info": "Informacje",
+        "calendar": "Kalendarz"
     },
     "state": {
         "default": {
@@ -126,14 +127,14 @@
         "camera": {
             "recording": "nagrywanie",
             "streaming": "strumieniowanie",
-            "idle": "bezczynna"
+            "idle": "nieaktywna"
         },
         "climate": {
             "off": "wyłączony",
             "on": "włączony",
             "heat": "ogrzewanie",
             "cool": "chłodzenie",
-            "idle": "bezczynny",
+            "idle": "nieaktywny",
             "auto": "automatyczny",
             "dry": "osuszanie",
             "fan_only": "tylko wentylator",
@@ -149,9 +150,9 @@
             "configured": "skonfigurowany"
         },
         "cover": {
-            "open": "Otwórz",
+            "open": "Otwarta",
             "opening": "otwieranie",
-            "closed": "zamknięty",
+            "closed": "Zamknięta",
             "closing": "zamykanie",
             "stopped": "zatrzymany"
         },
@@ -168,7 +169,7 @@
             "on": "włączony",
             "home": "w domu",
             "not_home": "poza domem",
-            "open": "otwórz",
+            "open": "otwarta",
             "opening": "otwieranie",
             "closed": "zamknięte",
             "closing": "zamykanie",
@@ -195,7 +196,7 @@
             "on": "włączony",
             "playing": "odtwarzanie",
             "paused": "pauza",
-            "idle": "bezczynny",
+            "idle": "nieaktywny",
             "standby": "tryb czuwania"
         },
         "plant": {
@@ -236,6 +237,22 @@
                 "initializing": "inicjalizacja ({query_stage})",
                 "dead": "martwy ({query_stage})"
             }
+        },
+        "weather": {
+            "clear-night": "pogodnie, noc",
+            "cloudy": "pochmurno",
+            "fog": "mgła",
+            "hail": "grad",
+            "lightning": "błyskawice",
+            "lightning-rainy": "burza",
+            "partlycloudy": "częściowe zachmurzenie",
+            "pouring": "ulewa",
+            "rainy": "deszczowo",
+            "snowy": "śnieżnie",
+            "snowy-rainy": "śnieżnie, deszczowo",
+            "sunny": "słonecznie",
+            "windy": "wietrznie",
+            "windy-variant": "wietrznie"
         }
     },
     "state_badge": {
@@ -403,7 +420,7 @@
                                 },
                                 "zone": {
                                     "label": "Strefa",
-                                    "entity": "Jednostka z lokalizacji",
+                                    "entity": "Encja z lokalizacją",
                                     "zone": "Strefa",
                                     "event": "Zdarzenie",
                                     "enter": "Wprowadź",
@@ -451,7 +468,7 @@
                                 },
                                 "zone": {
                                     "label": "Strefa",
-                                    "entity": "Jednostka z lokalizacji",
+                                    "entity": "Encja z lokalizacją",
                                     "zone": "Strefa"
                                 }
                             }
@@ -483,7 +500,7 @@
                                     "label": "Warunek"
                                 },
                                 "event": {
-                                    "label": "Spalenie zdarzenia",
+                                    "label": "Uruchom zdarzenie",
                                     "event": "Zdarzenie:",
                                     "service_data": "Dane usługi"
                                 }
@@ -498,6 +515,20 @@
                 "zwave": {
                     "caption": "Z-Wave",
                     "description": "Zarządzaj swoją siecią Z-Wave"
+                },
+                "users": {
+                    "caption": "Użytkownicy",
+                    "description": "Zarządzanie użytkownikami",
+                    "picker": {
+                        "title": "Użytkownicy"
+                    },
+                    "editor": {
+                        "rename_user": "Zmień nazwę użytkownika",
+                        "change_password": "Zmień hasło",
+                        "activate_user": "Aktywuj użytkownika",
+                        "deactivate_user": "Dezaktywuj użytkownika",
+                        "delete_user": "Usuń użytkownika"
+                    }
                 }
             }
         },
@@ -512,7 +543,9 @@
         "duration": {
             "day": "{count} {count, plural,\n  one {dzień}\n  other {dni}\n}",
             "week": "{count} {count, plural,\n  one {tydzień}\n  other {tygodni(e)}\n}",
-            "second": "{count} {count, plural,\n  one {sekunda}\n  other {sekund(y)}\n}"
+            "second": "{count} {count, plural,\n  one {sekunda}\n  other {sekund(y)}\n}",
+            "minute": "{count} {count, plural,\none {minuta}\nother {minut(y)}\n}",
+            "hour": "{count} {count, plural,\none {godzina}\nother {godzin(y)}\n}"
         },
         "login-form": {
             "password": "Hasło",
@@ -525,16 +558,126 @@
             },
             "persistent_notification": {
                 "dismiss": "Odrzuć"
+            },
+            "scene": {
+                "activate": "Aktywuj"
+            },
+            "script": {
+                "execute": "Wykonaj"
+            },
+            "weather": {
+                "attributes": {
+                    "air_pressure": "Ciśnienie",
+                    "humidity": "Wilgotność",
+                    "temperature": "Temperatura",
+                    "visibility": "Widoczność",
+                    "wind_speed": "Prędkość wiatru"
+                },
+                "cardinal_direction": {
+                    "e": "zach.",
+                    "ene": "wsch. płn.-wsch.",
+                    "ese": "wsch. płd.-wsch.",
+                    "n": "płn.",
+                    "ne": "płn.-wsch.",
+                    "nne": "płn. płn.-wsch.",
+                    "nw": "płn.-zach.",
+                    "nnw": "płn. płn.-zach.",
+                    "s": "płd.",
+                    "se": "płd.-wsch.",
+                    "sse": "płd. płd.-wsch.",
+                    "ssw": "płd. płd.-zach.",
+                    "sw": "płd.-zach.",
+                    "w": "zach.",
+                    "wnw": "zach. płn.-zach.",
+                    "wsw": "zach. płd.-zach."
+                },
+                "forecast": "Prognoza"
+            },
+            "alarm_control_panel": {
+                "code": "Kod",
+                "clear_code": "Wyczyść",
+                "disarm": "Rozbrojony",
+                "arm_home": "Uzbrojony (w domu)",
+                "arm_away": "Uzbrojony (nieobecny)"
+            },
+            "automation": {
+                "last_triggered": "Ostatnio uruchomione",
+                "trigger": "Wyzwalacz"
+            },
+            "cover": {
+                "position": "Pozycja",
+                "tilt_position": "Pochylenie"
+            },
+            "fan": {
+                "speed": "Prędkość",
+                "oscillate": "Oscylacja",
+                "direction": "Kierunek"
+            },
+            "light": {
+                "brightness": "Jasność",
+                "color_temperature": "Temperatura barwy",
+                "white_value": "Biel",
+                "effect": "Efekt"
+            },
+            "media_player": {
+                "text_to_speak": "Zamień tekst na mowę",
+                "source": "Źródło",
+                "sound_mode": "Tryb dźwięku"
+            },
+            "climate": {
+                "currently": "Obecnie",
+                "on_off": "Wł. \/ wył.",
+                "target_temperature": "Docelowa temperatura",
+                "target_humidity": "Docelowa wilgotność",
+                "operation": "Tryb działania",
+                "fan_mode": "Tryb pracy wentylatora",
+                "swing_mode": "Tryb ruchu łopatek",
+                "away_mode": "Tryb poza domem",
+                "aux_heat": "Dodatkowe źródło ciepła"
+            },
+            "lock": {
+                "code": "Kod",
+                "lock": "Zablokuj",
+                "unlock": "Odblokuj"
             }
         },
         "components": {
             "entity": {
                 "entity-picker": {
-                    "entity": "Jednostka"
+                    "entity": "Encja"
                 }
             },
             "service-picker": {
                 "service": "Usługa"
+            },
+            "relative_time": {
+                "past": "{time} temu",
+                "future": "Za {time}",
+                "never": "Nigdy",
+                "duration": {
+                    "second": "{count} {count, plural,\n  one {sekunda}\n  other {sekund(y)}\n}",
+                    "minute": "{count} {count, plural,\n  one {minuta}\n  other {minut(y)}\n}",
+                    "hour": "{count} {count, plural,\n  one {godzina}\n  other {godzin(y)}\n}",
+                    "day": "{count} {count, plural,\n  one {dzień}\n  other {dni}\n}",
+                    "week": "{count} {count, plural,\n  one {tydzień}\n  other {tygodni(e)}\n}"
+                }
+            },
+            "history_charts": {
+                "loading_history": "Ładowanie historii...",
+                "no_history_found": "Nie znaleziono historii."
+            }
+        },
+        "notification_toast": {
+            "entity_turned_on": "Włączono {entity}.",
+            "entity_turned_off": "Wyłączono {entity}.",
+            "service_called": "Usługa {service} wywołana.",
+            "service_call_failed": "Nie udało się wywołać usługi {service}.",
+            "connection_lost": "Utracono połączenie. Łączę ponownie..."
+        },
+        "dialogs": {
+            "more_info_settings": {
+                "save": "Zapisz",
+                "name": "Nazwa"
             }
         }
     },

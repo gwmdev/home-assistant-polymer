@@ -12,7 +12,8 @@
         "dev-events": "Hendelser",
         "dev-templates": "Maler",
         "dev-mqtt": "MQTT",
-        "dev-info": "Info"
+        "dev-info": "Info",
+        "calendar": "Kalender"
     },
     "state": {
         "default": {
@@ -236,6 +237,22 @@
                 "initializing": "Initialiserer ({query_stage})",
                 "dead": "Død  ({query_stage})"
             }
+        },
+        "weather": {
+            "clear-night": "Klart, natt",
+            "cloudy": "Skyet",
+            "fog": "Tåke",
+            "hail": "Hagl",
+            "lightning": "Lyn",
+            "lightning-rainy": "Lyn, regnfull",
+            "partlycloudy": "Delvis skyet",
+            "pouring": "Kraftig regn",
+            "rainy": "Regnfull",
+            "snowy": "Snø",
+            "snowy-rainy": "Sludd",
+            "sunny": "Solfylt",
+            "windy": "Vind",
+            "windy-variant": "Vind"
         }
     },
     "state_badge": {
@@ -458,7 +475,7 @@
                         },
                         "actions": {
                             "header": "Handlinger",
-                            "introduction": "Handlinger er det Home Assistant gjør når automatiseringen utløses.\n\n[Lær mer om handlinger.](https:\/\/home-assistant.io\/docs\/automation\/action\/)",
+                            "introduction": "Handlinger er det Home Assistant utfører når automatiseringen utløses.\n\n[Lær mer om handlinger.](https:\/\/home-assistant.io\/docs\/automation\/action\/)",
                             "add": "Legg til handling",
                             "duplicate": "Dupliser",
                             "delete": "Slett",
@@ -498,6 +515,20 @@
                 "zwave": {
                     "caption": "Z-Wave",
                     "description": "Administrer ditt Z-Wave-nettverk"
+                },
+                "users": {
+                    "caption": "Brukere",
+                    "description": "Administrer brukere",
+                    "picker": {
+                        "title": "Brukere"
+                    },
+                    "editor": {
+                        "rename_user": "Gi nytt navn til bruker",
+                        "change_password": "Endre passord",
+                        "activate_user": "Aktiver bruker",
+                        "deactivate_user": "Deaktiver bruker",
+                        "delete_user": "Slett bruker"
+                    }
                 }
             }
         },
@@ -512,7 +543,9 @@
         "duration": {
             "day": "{count} {count, plural,\none {dag}\nother {dager}\n}",
             "week": "{count} {count, plural,\none {uke}\nother {uker}\n}",
-            "second": "{count} {count, plural,\none {sekund}\nother {sekunder}\n}"
+            "second": "{count} {count, plural,\none {sekund}\nother {sekunder}\n}",
+            "minute": "{count} {count, plural,\none {minutt}\nother {minutter}\n}",
+            "hour": "{count} {count, plural,\none {time}\nother {timer}\n}"
         },
         "login-form": {
             "password": "Passord",
@@ -525,6 +558,87 @@
             },
             "persistent_notification": {
                 "dismiss": "Avvis"
+            },
+            "scene": {
+                "activate": "Aktiver"
+            },
+            "script": {
+                "execute": "Utfør"
+            },
+            "weather": {
+                "attributes": {
+                    "air_pressure": "Lufttrykk",
+                    "humidity": "Luftfuktighet",
+                    "temperature": "Temperatur",
+                    "visibility": "Sikt",
+                    "wind_speed": "Vindstyrke"
+                },
+                "cardinal_direction": {
+                    "e": "Ø",
+                    "ene": "ØNØ",
+                    "ese": "ØSØ",
+                    "n": "N",
+                    "ne": "NØ",
+                    "nne": "NNØ",
+                    "nw": "NV",
+                    "nnw": "NNV",
+                    "s": "S",
+                    "se": "SØ",
+                    "sse": "SSØ",
+                    "ssw": "SSV",
+                    "sw": "SV",
+                    "w": "V",
+                    "wnw": "VNV",
+                    "wsw": "VSV"
+                },
+                "forecast": "Prognose"
+            },
+            "alarm_control_panel": {
+                "code": "Kode",
+                "clear_code": "Klarer",
+                "disarm": "Deaktiver",
+                "arm_home": "Armer hjemme",
+                "arm_away": "Armer bort"
+            },
+            "automation": {
+                "last_triggered": "Sist utløst",
+                "trigger": "Utløs"
+            },
+            "cover": {
+                "position": "Posisjon",
+                "tilt_position": "Vend posisjon"
+            },
+            "fan": {
+                "speed": "Hastighet",
+                "oscillate": "Svinge",
+                "direction": "Retning"
+            },
+            "light": {
+                "brightness": "Lysstyrke",
+                "color_temperature": "Fargetemperatur",
+                "white_value": "Hvit verdi",
+                "effect": "Effekt"
+            },
+            "media_player": {
+                "text_to_speak": "Tekst til tale",
+                "source": "Kilde",
+                "sound_mode": "Lydmodus"
+            },
+            "climate": {
+                "currently": "Er nå",
+                "on_off": "På \/ av",
+                "target_temperature": "Ønsket temperatur",
+                "target_humidity": "Ønsket luftfuktighet",
+                "operation": "Operasjon",
+                "fan_mode": "Viftemodus",
+                "swing_mode": "Svingmodus",
+                "away_mode": "Bortemodus",
+                "aux_heat": "Aux varme"
+            },
+            "lock": {
+                "code": "Kode",
+                "lock": "Lås",
+                "unlock": "Låse opp"
             }
         },
         "components": {
@@ -535,6 +649,36 @@
             },
             "service-picker": {
                 "service": "Tjeneste"
+            },
+            "relative_time": {
+                "past": "For {time} siden",
+                "future": "Om {time}",
+                "never": "Aldri",
+                "duration": {
+                    "second": "{count} {count, plural,\n  one {sekund}\n  other {sekunder}\n}",
+                    "minute": "{count} {count, plural,\n  one {minutt}\n  other {minutter}\n}",
+                    "hour": "{count} {count, plural,\n  one {time}\n  other {timer}\n}",
+                    "day": "{count} {count, plural,\n  one {dag}\n  other {dager}\n}",
+                    "week": "{count} {count, plural,\n  one {uke}\n  other {uker}\n}"
+                }
+            },
+            "history_charts": {
+                "loading_history": "Laster statushistorikk...",
+                "no_history_found": "Ingen status history funnet."
+            }
+        },
+        "notification_toast": {
+            "entity_turned_on": "Slo på {entity}.",
+            "entity_turned_off": "Slo av {entity}.",
+            "service_called": "Tjenesten {service} kalt.",
+            "service_call_failed": "Kunne ikke tilkalle tjenesten {service}.",
+            "connection_lost": "Forbindelsen ble brutt. Kobler til på nytt..."
+        },
+        "dialogs": {
+            "more_info_settings": {
+                "save": "Lagre",
+                "name": "Navn",
+                "entity_id": "Enhets ID"
             }
         }
     },
@@ -554,7 +698,7 @@
         "group": "Gruppe",
         "image_processing": "Bildebehandling",
         "input_boolean": "Angi boolsk",
-        "input_datetime": "Angi dato",
+        "input_datetime": "Angi datotid",
         "input_select": "Angi valg",
         "input_number": "Angi nummer",
         "input_text": "Angi tekst",
