@@ -1,8 +1,8 @@
-import '@polymer/paper-styles/paper-styles.js';
-import '@polymer/polymer/polymer-legacy.js';
+import "@polymer/paper-styles/paper-styles.js";
+import "@polymer/polymer/polymer-legacy.js";
 
-const documentContainer = document.createElement('template');
-documentContainer.setAttribute('style', 'display: none;');
+const documentContainer = document.createElement("template");
+documentContainer.setAttribute("style", "display: none;");
 
 documentContainer.innerHTML = `<custom-style>
   <style>
@@ -44,8 +44,7 @@ documentContainer.innerHTML = `<custom-style>
       --sidebar-text-color: var(--primary-text-color);
       --sidebar-background-color: var(--paper-listbox-background-color); /* backward compatible with existing themes */
       --sidebar-icon-color: rgba(0, 0, 0, 0.5);
-      --sidebar-selected-text-color: var(--primary-text-color);
-      /* --sidebar-selected-background-color: rgba(30,30,30,0.1); */
+      --sidebar-selected-text-color: var(--primary-color);
       --sidebar-selected-icon-color: var(--primary-color);
 
       /* controls */
@@ -191,6 +190,12 @@ documentContainer.innerHTML = `<custom-style>
       .card-actions ha-call-service-button.warning:not([disabled]) {
         color: var(--google-red-500);
       }
+
+      .card-actions paper-button[primary] {
+        background-color: var(--primary-color);
+        color: var(--text-primary-color);
+      }
+
     </style>
   </template>
 </dom-module><dom-module id="ha-style-dialog">

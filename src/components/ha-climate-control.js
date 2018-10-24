@@ -1,9 +1,9 @@
-import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import "@polymer/iron-flex-layout/iron-flex-layout-classes.js";
+import "@polymer/paper-icon-button/paper-icon-button.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
 
-import EventsMixin from '../mixins/events-mixin.js';
+import EventsMixin from "../mixins/events-mixin.js";
 
 /*
  * @appliesMixin EventsMixin
@@ -55,7 +55,7 @@ class HaClimateControl extends EventsMixin(PolymerElement) {
     return {
       value: {
         type: Number,
-        observer: 'valueChanged'
+        observer: "valueChanged",
       },
       units: {
         type: String,
@@ -76,9 +76,11 @@ class HaClimateControl extends EventsMixin(PolymerElement) {
       }
     };
   }
+
   temperatureStateInFlux(inFlux) {
-    this.$.target_temperature.classList.toggle('in-flux', inFlux);
+    this.$.target_temperature.classList.toggle("in-flux", inFlux);
   }
+
   incrementValue() {
     const newval = this.value + this.step;
     if (this.value < this.max) {
@@ -98,6 +100,7 @@ class HaClimateControl extends EventsMixin(PolymerElement) {
       this.value = this.max;
     }
   }
+
   decrementValue() {
     const newval = this.value - this.step;
     if (this.value > this.min) {
@@ -110,6 +113,7 @@ class HaClimateControl extends EventsMixin(PolymerElement) {
       this.value = this.min;
     }
   }
+
   valueChanged() {
     // when the last_changed timestamp is changed,
     // trigger a potential event fire in
@@ -119,7 +123,7 @@ class HaClimateControl extends EventsMixin(PolymerElement) {
       window.setTimeout(() => {
         const now = Date.now();
         if (now - this.last_changed >= 2000) {
-          this.fire('change');
+          this.fire("change");
           this.temperatureStateInFlux(false);
           this.last_changed = null;
         }
@@ -128,4 +132,4 @@ class HaClimateControl extends EventsMixin(PolymerElement) {
   }
 }
 
-customElements.define('ha-climate-control', HaClimateControl);
+customElements.define("ha-climate-control", HaClimateControl);

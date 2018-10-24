@@ -1,12 +1,12 @@
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import "@polymer/paper-card/paper-card.js";
+import "@polymer/paper-icon-button/paper-icon-button.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
 
-import '../../../components/buttons/ha-call-api-button.js';
-import '../../../components/buttons/ha-call-service-button.js';
-import '../../../components/ha-service-description.js';
-import '../ha-config-section.js';
+import "../../../components/buttons/ha-call-api-button.js";
+import "../../../components/buttons/ha-call-service-button.js";
+import "../../../components/ha-service-description.js";
+import "../ha-config-section.js";
 
 class ZwaveNetwork extends PolymerElement {
   static get template() {
@@ -55,36 +55,126 @@ class ZwaveNetwork extends PolymerElement {
 
       <paper-card class="content">
         <div class="card-actions">
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="add_node_secure">Add Node Secure</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="add_node_secure" hidden$="[[!showDescription]]"></ha-service-description>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="add_node_secure">
+            Add Node Secure
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="add_node_secure"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
 
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="add_node">Add Node</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="add_node" hidden$="[[!showDescription]]"></ha-service-description>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="add_node">
+            Add Node
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="add_node"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
 
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="remove_node">Remove Node</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="remove_node" hidden$="[[!showDescription]]"></ha-service-description>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="remove_node">
+            Remove Node
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="remove_node"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
 
         </div>
         <div class="card-actions warning">
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="cancel_command">Cancel Command</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="cancel_command" hidden$="[[!showDescription]]"></ha-service-description>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="cancel_command">
+            Cancel Command
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="cancel_command"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
 
         </div>
         <div class="card-actions">
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="heal_network">Heal Network</ha-call-service-button>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="heal_network">
+            Heal Network
+          </ha-call-service-button>
 
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="start_network">Start Network</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="start_network" hidden$="[[!showDescription]]"></ha-service-description>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="start_network">
+            Start Network
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="start_network"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
 
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="stop_network">Stop Network</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="stop_network" hidden$="[[!showDescription]]"></ha-service-description>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="stop_network">
+            Stop Network
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="stop_network"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
 
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="soft_reset">Soft Reset</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="soft_reset" hidden$="[[!showDescription]]"></ha-service-description>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="soft_reset">
+            Soft Reset
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="soft_reset"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
 
-          <ha-call-service-button hass="[[hass]]" domain="zwave" service="test_network">Test Network</ha-call-service-button>
-          <ha-service-description hass="[[hass]]" domain="zwave" service="test_network" hidden$="[[!showDescription]]"></ha-service-description>
-          <ha-call-api-button hass="[[hass]]" path="zwave/saveconfig">Save Config</ha-call-api-button>
+          <ha-call-service-button
+            hass="[[hass]]"
+            domain="zwave"
+            service="test_network">
+            Test Network
+          </ha-call-service-button>
+          <ha-service-description
+            hass="[[hass]]"
+            domain="zwave"
+            service="test_network"
+            hidden$="[[!showDescription]]">
+          </ha-service-description>
+
+          <ha-call-api-button
+            hass="[[hass]]"
+            path="zwave/saveconfig">
+            Save Config
+          </ha-call-api-button>
 
         </div>
       </paper-card>
@@ -94,9 +184,7 @@ class ZwaveNetwork extends PolymerElement {
 
   static get properties() {
     return {
-      hass: {
-        type: Object,
-      },
+      hass: Object,
 
       isWide: {
         type: Boolean,
@@ -115,4 +203,4 @@ class ZwaveNetwork extends PolymerElement {
   }
 }
 
-customElements.define('zwave-network', ZwaveNetwork);
+customElements.define("zwave-network", ZwaveNetwork);

@@ -1,23 +1,22 @@
-import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
-import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/app-route/app-route.js';
-import '@polymer/iron-media-query/iron-media-query.js';
-import '@polymer/iron-pages/iron-pages.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import "@polymer/app-layout/app-drawer-layout/app-drawer-layout.js";
+import "@polymer/app-layout/app-drawer/app-drawer.js";
+import "@polymer/app-route/app-route.js";
+import "@polymer/iron-media-query/iron-media-query.js";
+import "@polymer/iron-pages/iron-pages.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
 
-import '../util/ha-url-sync.js';
+import "../util/ha-url-sync.js";
 
-import './partial-cards.js';
-import './partial-panel-resolver.js';
-import EventsMixin from '../mixins/events-mixin.js';
-import NavigateMixin from '../mixins/navigate-mixin.js';
+import "./partial-cards.js";
+import "./partial-panel-resolver.js";
+import EventsMixin from "../mixins/events-mixin.js";
+import NavigateMixin from "../mixins/navigate-mixin.js";
 
-import(/* webpackChunkName: "ha-sidebar" */ '../components/ha-sidebar.js');
-import(/* webpackChunkName: "more-info-dialog" */ '../dialogs/ha-more-info-dialog.js');
-import(/* webpackChunkName: "voice-command-dialog" */ '../dialogs/ha-voice-command-dialog.js');
+import(/* webpackChunkName: "ha-sidebar" */ "../components/ha-sidebar.js");
+import(/* webpackChunkName: "voice-command-dialog" */ "../dialogs/ha-voice-command-dialog.js");
 
-const NON_SWIPABLE_PANELS = ['kiosk', 'map'];
+const NON_SWIPABLE_PANELS = ["kiosk", "map"];
 
 class HomeAssistantMain extends NavigateMixin(EventsMixin(PolymerElement)) {
   static get template() {
@@ -36,7 +35,6 @@ class HomeAssistantMain extends NavigateMixin(EventsMixin(PolymerElement)) {
       height: 100%;
     }
   </style>
-  <ha-more-info-dialog hass="[[hass]]"></ha-more-info-dialog>
   <ha-url-sync hass="[[hass]]"></ha-url-sync>
   <app-route route="{{route}}" pattern="/states" tail="{{statesRouteTail}}"></app-route>
   <ha-voice-command-dialog hass="[[hass]]" id="voiceDialog"></ha-voice-command-dialog>
@@ -64,22 +62,24 @@ class HomeAssistantMain extends NavigateMixin(EventsMixin(PolymerElement)) {
       narrow: Boolean,
       route: {
         type: Object,
-        observer: '_routeChanged',
+        observer: "_routeChanged",
       },
       statesRouteTail: Object,
       dockedSidebar: {
         type: Boolean,
-        computed: 'computeDockedSidebar(hass)',
+        computed: "computeDockedSidebar(hass)",
       },
     };
   }
 
   ready() {
     super.ready();
-    this._defaultPage = localStorage.defaultPage || 'states';
-    this.addEventListener('hass-open-menu', () => this.handleOpenMenu());
-    this.addEventListener('hass-close-menu', () => this.handleCloseMenu());
-    this.addEventListener('hass-start-voice', ev => this.handleStartVoice(ev));
+    this._defaultPage = localStorage.defaultPage || "states";
+    this.addEventListener("hass-open-menu", () => this.handleOpenMenu());
+    this.addEventListener("hass-close-menu", () => this.handleCloseMenu());
+    this.addEventListener("hass-start-voice", (ev) =>
+      this.handleStartVoice(ev)
+    );
   }
 
   _routeChanged() {
@@ -97,21 +97,21 @@ class HomeAssistantMain extends NavigateMixin(EventsMixin(PolymerElement)) {
     if (this.narrow) {
       this.$.drawer.open();
     } else {
-      this.fire('hass-dock-sidebar', { dock: true });
+      this.fire("hass-dock-sidebar", { dock: true });
     }
   }
 
   handleCloseMenu() {
     this.$.drawer.close();
     if (this.dockedSidebar) {
-      this.fire('hass-dock-sidebar', { dock: false });
+      this.fire("hass-dock-sidebar", { dock: false });
     }
   }
 
   connectedCallback() {
     super.connectedCallback();
-    if (document.location.pathname === '/') {
-      this.navigate(`/${localStorage.defaultPage || 'states'}`, true);
+    if (document.location.pathname === "/") {
+      this.navigate(`/${localStorage.defaultPage || "states"}`, true);
     }
   }
 
@@ -128,4 +128,4 @@ class HomeAssistantMain extends NavigateMixin(EventsMixin(PolymerElement)) {
   }
 }
 
-customElements.define('home-assistant-main', HomeAssistantMain);
+customElements.define("home-assistant-main", HomeAssistantMain);

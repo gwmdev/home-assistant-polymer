@@ -1,76 +1,20 @@
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
 
-import '../../../components/entity/state-badge.js';
-import '../../../components/ha-relative-time.js';
-import '../../../components/ha-icon.js';
+import "../../../components/entity/state-badge.js";
+import "../../../components/ha-relative-time.js";
+import "../../../components/ha-icon.js";
 
-import computeStateName from '../../../common/entity/compute_state_name.js';
+import computeStateName from "../../../common/entity/compute_state_name.js";
 
 class HuiGenericEntityRow extends PolymerElement {
   static get template() {
     return html`
-      <style>
-        :host {
-          display: flex;
-          align-items: center;
-        }
-        .flex {
-          flex: 1;
-          overflow: hidden;
-          margin-left: 16px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        .info,
-        .info > * {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .flex ::slotted(*) {
-          margin-left: 8px;
-        }
-        .secondary,
-        ha-relative-time {
-          display: block;
-          color: var(--secondary-text-color);
-        }
-        ha-icon {
-          padding: 8px;
-          color: var(--paper-item-icon-color);
-        }
-        .not-found {
-          flex: 1;
-          background-color: yellow;
-          padding: 8px;
-        }
-      </style>
+      ${this.styleTemplate}
       <template is="dom-if" if="[[_stateObj]]">
-        <template is="dom-if" if="[[!config.icon]]">
-          <state-badge state-obj="[[_stateObj]]"></state-badge>
-        </template>
-        <template is="dom-if" if="[[config.icon]]">
-          <ha-icon icon="[[config.icon]]"></ha-icon>
-        </template>
+        ${this.stateBadgeTemplate}
         <div class="flex">
-          <div class="info">
-            [[_computeName(config.name, _stateObj)]]
-            <template is="dom-if" if="[[config.secondary_info]]">
-              <template is="dom-if" if="[[_equals(config.secondary_info, 'entity-id')]]">
-                <div class="secondary">
-                  [[_stateObj.entity_id]]
-                </div>
-              </template>
-              <template is="dom-if" if="[[_equals(config.secondary_info, 'last-changed')]]">
-                <ha-relative-time
-                  hass="[[hass]]"
-                  datetime="[[_stateObj.last_changed]]"
-                ></ha-relative-time>
-              </template>
-            </template>
-          </div>
+          ${this.infoTemplate}
           <slot></slot>
         </div>
       </template>
@@ -82,14 +26,99 @@ class HuiGenericEntityRow extends PolymerElement {
     `;
   }
 
+  static get styleTemplate() {
+    return html`
+      <style>
+        :host {
+          display: flex;
+          align-items: center;
+        }
+        .flex {
+          flex: 1;
+          margin-left: 16px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          min-width: 0;
+        }
+        .info {
+          flex: 1 0 60px;
+        }
+        .info,
+        .info > * {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .flex ::slotted(*) {
+          margin-left: 8px;
+          min-width: 0;
+        }
+        .flex ::slotted([slot=secondary]) {
+          margin-left: 0;
+        }
+        .secondary,
+        ha-relative-time {
+          display: block;
+          color: var(--secondary-text-color);
+        }
+        .not-found {
+          flex: 1;
+          background-color: yellow;
+          padding: 8px;
+        }
+        state-badge {
+          flex: 0 0 40px;
+        }
+      </style>
+    `;
+  }
+
+  static get stateBadgeTemplate() {
+    return html`
+      <state-badge
+        state-obj="[[_stateObj]]"
+        override-icon="[[config.icon]]"
+      ></state-badge>
+    `;
+  }
+
+  static get infoTemplate() {
+    return html`
+      <div class="info">
+        [[_computeName(config.name, _stateObj)]]
+        <div class="secondary">
+          <template is="dom-if" if="[[showSecondary]]">
+            <template is="dom-if" if="[[_equals(config.secondary_info, 'entity-id')]]">
+              [[_stateObj.entity_id]]
+            </template>
+            <template is="dom-if" if="[[_equals(config.secondary_info, 'last-changed')]]">
+              <ha-relative-time
+                hass="[[hass]]"
+                datetime="[[_stateObj.last_changed]]"
+              ></ha-relative-time>
+            </template>
+          </template>
+          <template is="dom-if" if="[[!showSecondary]">
+            <slot name="secondary"></slot>
+          </template>
+        </div>
+      </div>
+    `;
+  }
+
   static get properties() {
     return {
       hass: Object,
       config: Object,
       _stateObj: {
         type: Object,
-        computed: '_computeStateObj(hass.states, config.entity)'
-      }
+        computed: "_computeStateObj(hass.states, config.entity)",
+      },
+      showSecondary: {
+        type: Boolean,
+        value: true,
+      },
     };
   }
 
@@ -105,4 +134,4 @@ class HuiGenericEntityRow extends PolymerElement {
     return name || computeStateName(stateObj);
   }
 }
-customElements.define('hui-generic-entity-row', HuiGenericEntityRow);
+customElements.define("hui-generic-entity-row", HuiGenericEntityRow);

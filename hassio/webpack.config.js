@@ -1,88 +1,54 @@
-const fs = require('fs');
-const path = require('path');
-const webpack = require('webpack');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
-const config = require('./config.js');
+const config = require("./config.js");
+const { babelLoaderConfig } = require("../config/babel.js");
 
-const version = fs.readFileSync('../setup.py', 'utf8').match(/\d{8}[^']*/);
-if (!version) {
-  throw Error('Version not found');
-}
-const VERSION = version[0];
-const isProdBuild = process.env.NODE_ENV === 'production'
-const chunkFilename = isProdBuild ?
-  'chunk.[chunkhash].js' : '[name].chunk.js';
-
-const plugins = [
-  new webpack.DefinePlugin({
-    __DEV__: JSON.stringify(!isProdBuild),
-    __VERSION__: JSON.stringify(VERSION),
-  })
-];
-
-if (isProdBuild) {
-  plugins.push(new UglifyJsPlugin({
-    extractComments: true,
-    sourceMap: true,
-    uglifyOptions: {
-      // Disabling because it broke output
-      mangle: false,
-    }
-  }));
-  plugins.push(new CompressionPlugin({
-    cache: true,
-    exclude: [
-      /\.js\.map$/,
-      /\.LICENSE$/,
-      /\.py$/,
-      /\.txt$/,
-    ]
-  }));
-}
+const isProdBuild = process.env.NODE_ENV === "production";
+const chunkFilename = isProdBuild ? "chunk.[chunkhash].js" : "[name].chunk.js";
 
 module.exports = {
-  mode: isProdBuild ? 'production' : 'development',
-  // Disabled in prod while we make Home Assistant able to serve the right files.
-  // Was source-map
-  devtool: isProdBuild ? 'none' : 'inline-source-map',
+  mode: isProdBuild ? "production" : "development",
+  devtool: isProdBuild ? "source-map" : "inline-source-map",
   entry: {
-    entrypoint: './src/entrypoint.js',
+    entrypoint: "./src/entrypoint.js",
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [require('babel-preset-env').default, { modules: false }]
-            ],
-            plugins: [
-              // Only support the syntax, Webpack will handle it.
-              "syntax-dynamic-import",
-            ],
-          },
-        },
-      },
+      babelLoaderConfig({ latestBuild: false }),
       {
         test: /\.(html)$/,
         use: {
-          loader: 'html-loader',
+          loader: "html-loader",
           options: {
             exportAsEs6Default: true,
-          }
-        }
-      }
-
-    ]
+          },
+        },
+      },
+    ],
   },
-  plugins,
+  plugins: [
+    isProdBuild &&
+      new UglifyJsPlugin({
+        extractComments: true,
+        sourceMap: true,
+        uglifyOptions: {
+          // Disabling because it broke output
+          mangle: false,
+        },
+      }),
+    isProdBuild &&
+      new CompressionPlugin({
+        cache: true,
+        exclude: [/\.js\.map$/, /\.LICENSE$/, /\.py$/, /\.txt$/],
+      }),
+  ].filter(Boolean),
+  resolve: {
+    extensions: [".ts", ".js", ".json"],
+  },
   output: {
-    filename: '[name].js',
-    chunkFilename: chunkFilename,
+    filename: "[name].js",
+    chunkFilename,
     path: config.buildDir,
     publicPath: `${config.publicPath}/`,
-  }
+  },
 };

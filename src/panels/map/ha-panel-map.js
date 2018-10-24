@@ -1,19 +1,19 @@
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import Leaflet from 'leaflet';
+import "@polymer/app-layout/app-toolbar/app-toolbar.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
+import Leaflet from "leaflet";
 
-import '../../components/ha-menu-button.js';
-import '../../components/ha-icon.js';
+import "../../components/ha-menu-button.js";
+import "../../components/ha-icon.js";
 
-import './ha-entity-marker.js';
+import "./ha-entity-marker.js";
 
-import computeStateDomain from '../../common/entity/compute_state_domain.js';
-import computeStateName from '../../common/entity/compute_state_name.js';
-import LocalizeMixin from '../../mixins/localize-mixin.js';
-import setupLeafletMap from '../../common/dom/setup-leaflet-map.js';
+import computeStateDomain from "../../common/entity/compute_state_domain.js";
+import computeStateName from "../../common/entity/compute_state_name.js";
+import LocalizeMixin from "../../mixins/localize-mixin.js";
+import setupLeafletMap from "../../common/dom/setup-leaflet-map.js";
 
-Leaflet.Icon.Default.imagePath = '/static/images/leaflet';
+Leaflet.Icon.Default.imagePath = "/static/images/leaflet";
 
 /*
  * @appliesMixin LocalizeMixin
@@ -42,7 +42,7 @@ class HaPanelMap extends LocalizeMixin(PolymerElement) {
     return {
       hass: {
         type: Object,
-        observer: 'drawEntities',
+        observer: "drawEntities",
       },
 
       narrow: {
@@ -58,7 +58,7 @@ class HaPanelMap extends LocalizeMixin(PolymerElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    var map = this._map = setupLeafletMap(this.$.map);
+    var map = (this._map = setupLeafletMap(this.$.map));
 
     this.drawEntities(this.hass);
 
@@ -79,11 +79,16 @@ class HaPanelMap extends LocalizeMixin(PolymerElement) {
     console.log(this._mapItems);
     if (this._mapItems.length === 0) {
       this._map.setView(
-        new Leaflet.LatLng(this.hass.config.core.latitude, this.hass.config.core.longitude),
+        new Leaflet.LatLng(
+          this.hass.config.latitude,
+          this.hass.config.longitude
+        ),
         14
       );
     } else {
-      bounds = new Leaflet.latLngBounds(this._mapItems.map(item => item.getLatLng()));
+      bounds = new Leaflet.latLngBounds(
+        this._mapItems.map((item) => item.getLatLng())
+      );
       this._map.fitBounds(bounds.pad(0.5));
     }
   }
@@ -94,33 +99,36 @@ class HaPanelMap extends LocalizeMixin(PolymerElement) {
     if (!map) return;
 
     if (this._mapItems) {
-      this._mapItems.forEach(function (marker) { marker.remove(); });
+      this._mapItems.forEach(function(marker) {
+        marker.remove();
+      });
     }
-    var mapItems = this._mapItems = [];
+    var mapItems = (this._mapItems = []);
 
-    Object.keys(hass.states).forEach(function (entityId) {
+    Object.keys(hass.states).forEach(function(entityId) {
       var entity = hass.states[entityId];
       var title = computeStateName(entity);
 
-      if ((entity.attributes.hidden &&
-          computeStateDomain(entity) !== 'zone') ||
-          entity.state === 'home' ||
-          !('latitude' in entity.attributes) ||
-          !('longitude' in entity.attributes)) {
+      if (
+        (entity.attributes.hidden && computeStateDomain(entity) !== "zone") ||
+        entity.state === "home" ||
+        !("latitude" in entity.attributes) ||
+        !("longitude" in entity.attributes)
+      ) {
         return;
       }
 
       var icon;
 
-      if (computeStateDomain(entity) === 'zone') {
+      if (computeStateDomain(entity) === "zone") {
         // DRAW ZONE
         if (entity.attributes.passive) return;
 
         // create icon
-        var iconHTML = '';
+        var iconHTML = "";
         if (entity.attributes.icon) {
-          const el = document.createElement('ha-icon');
-          el.setAttribute('icon', entity.attributes.icon);
+          const el = document.createElement("ha-icon");
+          el.setAttribute("icon", entity.attributes.icon);
           iconHTML = el.outerHTML;
         } else {
           iconHTML = title;
@@ -129,7 +137,7 @@ class HaPanelMap extends LocalizeMixin(PolymerElement) {
         icon = Leaflet.divIcon({
           html: iconHTML,
           iconSize: [24, 24],
-          className: '',
+          className: "",
         });
 
         //convert latitude and longitude
@@ -183,14 +191,26 @@ class HaPanelMap extends LocalizeMixin(PolymerElement) {
 
       // DRAW ENTITY
       // create icon
-      var entityPicture = entity.attributes.entity_picture || '';
-      var entityName = title.split(' ').map(function (part) { return part.substr(0, 1); }).join('');
+      var entityPicture = entity.attributes.entity_picture || "";
+      var entityName = title
+        .split(" ")
+        .map(function(part) {
+          return part.substr(0, 1);
+        })
+        .join("");
       /* Leaflet clones this element before adding it to the map. This messes up
          our Polymer object and we can't pass data through. Thus we hack like this. */
       icon = Leaflet.divIcon({
-        html: "<ha-entity-marker entity-id='" + entity.entity_id + "' entity-name='" + entityName + "' entity-picture='" + entityPicture + "'></ha-entity-marker>",
+        html:
+          "<ha-entity-marker entity-id='" +
+          entity.entity_id +
+          "' entity-name='" +
+          entityName +
+          "' entity-picture='" +
+          entityPicture +
+          "'></ha-entity-marker>",
         iconSize: [45, 45],
-        className: '',
+        className: "",
       });
 
       var amapLngLat = new AMap.LngLat(entity.attributes.longitude, entity.attributes.latitude)
@@ -244,4 +264,4 @@ class HaPanelMap extends LocalizeMixin(PolymerElement) {
   }
 }
 
-customElements.define('ha-panel-map', HaPanelMap);
+customElements.define("ha-panel-map", HaPanelMap);

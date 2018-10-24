@@ -1,17 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <link rel='preload' href='<%= coreJS %>' as='script'/>
+    <link rel='preload' href='/static/fonts/roboto/Roboto-Regular.ttf' as='font' crossorigin />
+    <link rel='preload' href='/static/fonts/roboto/Roboto-Medium.ttf' as='font' crossorigin />
+    <%= require('raw-loader!./_header.html.template') %>
     <title>Home Assistant</title>
-
-    <link rel='manifest' href='/manifest.json' crossorigin="use-credentials">
-    <link rel='icon' href='/static/icons/favicon.ico'>
     <link rel='apple-touch-icon' sizes='180x180'
           href='/static/icons/favicon-apple-180x180.png'>
     <link rel="mask-icon" href="/static/icons/mask-icon.svg" color="#3fbbf4">
-    <link rel='preload' href='<%= corejs %>' as='script'/>
-    <link rel='preload' href='/static/fonts/roboto/Roboto-Regular.ttf' as='font' crossorigin />
-    <link rel='preload' href='/static/fonts/roboto/Roboto-Medium.ttf' as='font' crossorigin />
     <meta name='apple-mobile-web-app-capable' content='yes'>
     <meta name="msapplication-square70x70logo" content="/static/icons/tile-win-70x70.png"/>
     <meta name="msapplication-square150x150logo" content="/static/icons/tile-win-150x150.png"/>
@@ -20,19 +17,8 @@
     <meta name="msapplication-TileColor" content="#3fbbf4ff"/>
     <meta name='mobile-web-app-capable' content='yes'>
     <meta name='referrer' content='same-origin'>
-    <meta name='viewport' content='width=device-width, user-scalable=no'>
     <meta name='theme-color' content='{{ theme_color }}'>
     <style>
-      body {
-        font-family: Roboto, sans-serif;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-        font-weight: 400;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-      }
-
       #ha-init-skeleton::before {
         display: block;
         content: "";
@@ -41,6 +27,7 @@
       }
     </style>
     <script>
+      window.customPanelJS = '<%= customPanelJS %>';
       window.noAuth = '{{ no_auth }}';
       window.useOAuth = '{{ use_oauth }}'
       window.Polymer = {
@@ -72,9 +59,9 @@
         }());
       }
     </script>
-    <script src='<%= corejs %>'></script>
-    <script src='<%= appjs %>'></script>
-    <script src='/frontend_latest/hass-icons.js' async></script>
+    <script src='<%= coreJS %>'></script>
+    <script src='<%= appJS %>'></script>
+    <script src='<%= hassIconsJS %>' async></script>
     {% for extra_url in extra_urls -%}
       <link rel='import' href='{{ extra_url }}' async>
     {% endfor -%}

@@ -1,40 +1,41 @@
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import "@polymer/app-layout/app-header/app-header.js";
+import "@polymer/app-layout/app-toolbar/app-toolbar.js";
+import "@polymer/paper-card/paper-card.js";
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu.js";
+import "@polymer/paper-icon-button/paper-icon-button.js";
+import "@polymer/paper-input/paper-input.js";
+import "@polymer/paper-item/paper-item.js";
+import "@polymer/paper-listbox/paper-listbox.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
 
-import '../../../components/buttons/ha-call-service-button.js';
-import '../../../components/ha-menu-button.js';
-import '../../../components/ha-service-description.js';
-import '../../../layouts/ha-app-layout.js';
-import '../../../resources/ha-style.js';
+import "../../../components/buttons/ha-call-service-button.js";
+import "../../../components/ha-menu-button.js";
+import "../../../components/ha-service-description.js";
+import "../../../layouts/ha-app-layout.js";
+import "../../../resources/ha-style.js";
 
-import '../ha-config-section.js';
-import '../ha-form-style.js';
-import './zwave-groups.js';
-import './zwave-log.js';
-import './zwave-network.js';
-import './zwave-node-config.js';
-import './zwave-node-information.js';
-import './zwave-usercodes.js';
-import './zwave-values.js';
-import './zwave-node-protection.js';
+import "../ha-config-section.js";
+import "../ha-form-style.js";
+import "./zwave-groups.js";
+import "./zwave-log.js";
+import "./zwave-network.js";
+import "./zwave-node-config.js";
+import "./zwave-usercodes.js";
+import "./zwave-values.js";
+import "./zwave-node-protection.js";
 
-import sortByName from '../../../common/entity/states_sort_by_name.js';
-import computeStateName from '../../../common/entity/compute_state_name.js';
-import computeStateDomain from '../../../common/entity/compute_state_domain.js';
-import LocalizeMixin from '../../../mixins/localize-mixin.js';
+import sortByName from "../../../common/entity/states_sort_by_name.js";
+import computeStateName from "../../../common/entity/compute_state_name.js";
+import computeStateDomain from "../../../common/entity/compute_state_domain.js";
+import EventsMixin from "../../../mixins/events-mixin.js";
+import LocalizeMixin from "../../../mixins/localize-mixin.js";
 
 /*
  * @appliesMixin LocalizeMixin
+ * @appliesMixin EventsMixin
  */
-class HaConfigZwave extends LocalizeMixin(PolymerElement) {
+class HaConfigZwave extends LocalizeMixin(EventsMixin(PolymerElement)) {
   static get template() {
     return html`
     <style include="iron-flex ha-style ha-form-style">
@@ -120,66 +121,140 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
 
           <template is="dom-if" if="[[computeIsNodeSelected(selectedNode)]]">
           <div class="card-actions">
-            <ha-call-service-button hass="[[hass]]" domain="zwave" service="refresh_node" service-data="[[computeNodeServiceData(selectedNode)]]">Refresh Node</ha-call-service-button>
-            <ha-service-description hass="[[hass]]" domain="zwave" service="refresh_node" hidden$="[[!showHelp]]"></ha-service-description>
+            <ha-call-service-button
+              hass="[[hass]]"
+              domain="zwave"
+              service="refresh_node"
+              service-data="[[computeNodeServiceData(selectedNode)]]">
+              Refresh Node
+            </ha-call-service-button>
+            <ha-service-description
+              hass="[[hass]]"
+              domain="zwave"
+              service="refresh_node"
+              hidden$="[[!showHelp]]">
+            </ha-service-description>
 
-            <ha-call-service-button hass="[[hass]]" domain="zwave" service="remove_failed_node" service-data="[[computeNodeServiceData(selectedNode)]]">Remove Failed Node</ha-call-service-button>
-            <ha-service-description hass="[[hass]]" domain="zwave" service="remove_failed_node" hidden$="[[!showHelp]]"></ha-service-description>
+            <template is="dom-if" if="[[nodeFailed]]">
+            <ha-call-service-button
+              hass="[[hass]]"
+              domain="zwave"
+              service="remove_failed_node"
+              service-data="[[computeNodeServiceData(selectedNode)]]">
+              Remove Failed Node
+            </ha-call-service-button>
+            <ha-service-description
+              hass="[[hass]]"
+              domain="zwave"
+              service="remove_failed_node"
+              hidden$="[[!showHelp]]">
+            </ha-service-description>
 
-            <ha-call-service-button hass="[[hass]]" domain="zwave" service="replace_failed_node" service-data="[[computeNodeServiceData(selectedNode)]]">Replace Failed Node</ha-call-service-button>
-            <ha-service-description hass="[[hass]]" domain="zwave" service="replace_failed_node" hidden$="[[!showHelp]]"></ha-service-description>
+            <ha-call-service-button
+              hass="[[hass]]"
+              domain="zwave"
+              service="replace_failed_node"
+              service-data="[[computeNodeServiceData(selectedNode)]]">
+              Replace Failed Node
+            </ha-call-service-button>
+            <ha-service-description
+              hass="[[hass]]"
+              domain="zwave"
+              service="replace_failed_node"
+              hidden$="[[!showHelp]]">
+            </ha-service-description>
+            </template>
 
-            <ha-call-service-button hass="[[hass]]" domain="zwave" service="print_node" service-data="[[computeNodeServiceData(selectedNode)]]">Print Node</ha-call-service-button>
-            <ha-service-description hass="[[hass]]" domain="zwave" service="print_node" hidden$="[[!showHelp]]"></ha-service-description>
+            <ha-call-service-button
+              hass="[[hass]]"
+              domain="zwave"
+              service="print_node"
+              service-data="[[computeNodeServiceData(selectedNode)]]">
+              Print Node
+            </ha-call-service-button>
+            <ha-service-description
+              hass="[[hass]]"
+              domain="zwave"
+              service="print_node"
+              hidden$="[[!showHelp]]">
+            </ha-service-description>
 
-            <ha-call-service-button hass="[[hass]]" domain="zwave" service="heal_node" service-data="[[computeHealNodeServiceData(selectedNode)]]">Heal Node</ha-call-service-button>
-            <ha-service-description hass="[[hass]]" domain="zwave" service="heal_node" hidden$="[[!showHelp]]"></ha-service-description>
+            <ha-call-service-button
+              hass="[[hass]]"
+              domain="zwave"
+              service="heal_node"
+              service-data="[[computeHealNodeServiceData(selectedNode)]]">
+              Heal Node
+            </ha-call-service-button>
+            <ha-service-description
+              hass="[[hass]]"
+              domain="zwave"
+              service="heal_node"
+              hidden$="[[!showHelp]]">
+            </ha-service-description>
 
-            <ha-call-service-button hass="[[hass]]" domain="zwave" service="test_node" service-data="[[computeNodeServiceData(selectedNode)]]">Test Node</ha-call-service-button>
-            <ha-service-description hass="[[hass]]" domain="zwave" service="test_node" hidden$="[[!showHelp]]"></ha-service-description>
+            <ha-call-service-button
+              hass="[[hass]]"
+              domain="zwave"
+              service="test_node"
+              service-data="[[computeNodeServiceData(selectedNode)]]">
+              Test Node
+            </ha-call-service-button>
+            <ha-service-description
+              hass="[[hass]]"
+              domain="zwave"
+              service="test_node"
+              hidden$="[[!showHelp]]">
+            </ha-service-description>
+            <paper-button on-click="_nodeMoreInfo">Node Information</paper-button>
           </div>
-          <div class="card-actions">
-            <paper-input float-label="New node name" type="text" value="{{newNodeNameInput}}" placeholder="[[computeGetNodeName(selectedNode)]]">
-            </paper-input>
-            <ha-call-service-button hass="[[hass]]" domain="zwave" service="rename_node" service-data="[[computeNodeNameServiceData(newNodeNameInput)]]">Rename Node</ha-call-service-button>
-            <ha-service-description hass="[[hass]]" domain="zwave" service="rename_node" hidden$="[[!showHelp]]"></ha-service-description>
-           </div>
 
            <div class="device-picker">
             <paper-dropdown-menu label="Entities of this node" dynamic-align="" class="flex">
               <paper-listbox slot="dropdown-content" selected="{{selectedEntity}}">
                 <template is="dom-repeat" items="[[entities]]" as="state">
-                  <paper-item>[[computeSelectCaptionEnt(state)]]</paper-item>
+                  <paper-item>[[state.entity_id]]</paper-item>
                 </template>
               </paper-listbox>
             </paper-dropdown-menu>
            </div>
            <template is="dom-if" if="[[!computeIsEntitySelected(selectedEntity)]]">
            <div class="card-actions">
-             <ha-call-service-button hass="[[hass]]" domain="zwave" service="refresh_entity" service-data="[[computeRefreshEntityServiceData(selectedEntity)]]">Refresh Entity</ha-call-service-button>
-             <ha-service-description hass="[[hass]]" domain="zwave" service="refresh_entity" hidden$="[[!showHelp]]"></ha-service-description>
+             <ha-call-service-button
+               hass="[[hass]]"
+               domain="zwave"
+               service="refresh_entity"
+               service-data="[[computeRefreshEntityServiceData(selectedEntity)]]">
+               Refresh Entity
+             </ha-call-service-button>
+             <ha-service-description
+               hass="[[hass]]"
+               domain="zwave"
+               service="refresh_entity"
+               hidden$="[[!showHelp]]">
+             </ha-service-description>
+             <paper-button on-click="_entityMoreInfo">Entity Information</paper-button>
            </div>
            <div class="form-group">
              <paper-checkbox checked="{{entityIgnored}}" class="form-control">
              Exclude this entity from Home Assistant
              </paper-checkbox>
-             <paper-input disabled="{{entityIgnored}}" label="Polling intensity" type="number" min="0" value="{{entityPollingIntensity}}">
+             <paper-input
+               disabled="{{entityIgnored}}"
+               label="Polling intensity"
+               type="number"
+               min="0"
+               value="{{entityPollingIntensity}}">
              </paper-input>
            </div>
            <div class="card-actions">
-             <ha-call-service-button hass="[[hass]]" domain="zwave" service="set_poll_intensity" service-data="[[computePollIntensityServiceData(entityPollingIntensity)]]">Save</ha-call-service-button>
-           </div>
-           <div class="content">
-             <div class="card-actions">
-               <paper-button toggles="" raised="" noink="" active="{{entityInfoActive}}">Entity Attributes</paper-button>
-             </div>
-             <template is="dom-if" if="{{entityInfoActive}}">
-               <template is="dom-repeat" items="[[selectedEntityAttrs]]" as="state">
-                 <div class="node-info">
-                   <span>[[state]]</span>
-                 </div>
-               </template>
-             </template>
+             <ha-call-service-button
+               hass="[[hass]]"
+               domain="zwave"
+               service="set_poll_intensity"
+               service-data="[[computePollIntensityServiceData(entityPollingIntensity)]]">
+               Save
+             </ha-call-service-button>
            </div>
 
            </template>
@@ -187,12 +262,6 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
         </paper-card>
 
         <template is="dom-if" if="[[computeIsNodeSelected(selectedNode)]]">
-          <!--Node info card-->
-          <zwave-node-information
-            id="zwave-node-information"
-            nodes="[[nodes]]"
-            selected-node="[[selectedNode]]"
-          ></zwave-node-information>
 
           <!--Value card-->
           <zwave-values
@@ -254,44 +323,39 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
   static get properties() {
     return {
       hass: Object,
+
       isWide: Boolean,
 
       nodes: {
         type: Array,
-        computed: 'computeNodes(hass)'
+        computed: "computeNodes(hass)",
       },
 
       selectedNode: {
         type: Number,
         value: -1,
-        observer: 'selectedNodeChanged'
+        observer: "selectedNodeChanged",
+      },
+
+      nodeFailed: {
+        type: Boolean,
+        value: false,
       },
 
       config: {
         type: Array,
-        value: function () {
-          return [];
-        }
+        value: () => [],
       },
 
       entities: {
         type: Array,
-        computed: 'computeEntities(selectedNode)',
-      },
-
-      entityInfoActive: {
-        type: Boolean,
+        computed: "computeEntities(selectedNode)",
       },
 
       selectedEntity: {
         type: Number,
         value: -1,
-        observer: 'selectedEntityChanged',
-      },
-
-      selectedEntityAttrs: {
-        type: Array,
-        computed: 'computeSelectedEntityAttrs(selectedEntity)'
+        observer: "selectedEntityChanged",
       },
 
       values: {
@@ -302,15 +366,9 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
         type: Array,
       },
 
-      newNodeNameInput: {
-        type: String,
-      },
-
       userCodes: {
         type: Array,
-        value: function () {
-          return [];
-        },
+        value: () => [],
       },
 
       hasNodeUserCodes: {
@@ -323,9 +381,7 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
         value: false,
       },
 
-      entityIgnored: {
-        type: Boolean,
-      },
+      entityIgnored: Boolean,
 
       entityPollingIntensity: {
         type: Number,
@@ -346,125 +402,159 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
 
   ready() {
     super.ready();
-    this.addEventListener('hass-service-called', ev => this.serviceCalled(ev));
+    this.addEventListener("hass-service-called", (ev) =>
+      this.serviceCalled(ev)
+    );
   }
 
   serviceCalled(ev) {
-    var el = this;
-    if ((ev.detail.success) && (ev.detail.service === 'set_poll_intensity')) {
-      el.saveEntity();
+    if (ev.detail.success && ev.detail.service === "set_poll_intensity") {
+      this._saveEntity();
     }
   }
 
   computeNodes(hass) {
     return Object.keys(hass.states)
-      .map(function (key) { return hass.states[key]; })
-      .filter(function (ent) {
-        return ((ent.entity_id).match('zwave[.]'));
-      })
+      .map((key) => hass.states[key])
+      .filter((ent) => ent.entity_id.match("zwave[.]"))
       .sort(sortByName);
   }
 
   computeEntities(selectedNode) {
     if (!this.nodes || selectedNode === -1) return -1;
-    var hass = this.hass;
-    var nodeid = this.nodes[this.selectedNode].attributes.node_id;
-    return Object.keys(hass.states)
-      .map(function (key) { return hass.states[key]; })
-      .filter(function (ent) {
+    const nodeid = this.nodes[this.selectedNode].attributes.node_id;
+    const hass = this.hass;
+    return Object.keys(this.hass.states)
+      .map((key) => hass.states[key])
+      .filter((ent) => {
         if (ent.attributes.node_id === undefined) {
           return false;
         }
-        return (!ent.attributes.hidden &&
-                'node_id' in ent.attributes &&
-                ent.attributes.node_id === nodeid &&
-                (!(ent.entity_id).match('zwave[.]')));
+        return (
+          !ent.attributes.hidden &&
+          "node_id" in ent.attributes &&
+          ent.attributes.node_id === nodeid &&
+          !ent.entity_id.match("zwave[.]")
+        );
       })
       .sort(sortByName);
   }
 
   selectedNodeChanged(selectedNode) {
-    this.newNodeNameInput = '';
-
     if (selectedNode === -1) return;
-    this.selectedConfigParameter = -1;
-    this.selectedConfigParameterValue = -1;
-    this.selectedGroup = -1;
+    this.selectedEntity = -1;
 
-    this.hass.callApi('GET', 'zwave/config/' + this.nodes[selectedNode].attributes.node_id).then((configs) => {
-      this.config = this._objToArray(configs);
-    });
+    this.hass
+      .callApi(
+        "GET",
+        `zwave/config/${this.nodes[selectedNode].attributes.node_id}`
+      )
+      .then((configs) => {
+        this.config = this._objToArray(configs);
+      });
 
-    this.hass.callApi('GET', 'zwave/values/' + this.nodes[selectedNode].attributes.node_id).then((values) => {
-      this.values = this._objToArray(values);
-    });
+    this.hass
+      .callApi(
+        "GET",
+        `zwave/values/${this.nodes[selectedNode].attributes.node_id}`
+      )
+      .then((values) => {
+        this.values = this._objToArray(values);
+      });
 
-    this.hass.callApi('GET', 'zwave/groups/' + this.nodes[selectedNode].attributes.node_id).then((groups) => {
-      this.groups = this._objToArray(groups);
-    });
+    this.hass
+      .callApi(
+        "GET",
+        `zwave/groups/${this.nodes[selectedNode].attributes.node_id}`
+      )
+      .then((groups) => {
+        this.groups = this._objToArray(groups);
+      });
 
     this.hasNodeUserCodes = false;
-    this.notifyPath('hasNodeUserCodes');
-    this.hass.callApi('GET', 'zwave/usercodes/' + this.nodes[selectedNode].attributes.node_id).then((usercodes) => {
-      this.userCodes = this._objToArray(usercodes);
-      this.hasNodeUserCodes = this.userCodes.length > 0;
-      this.notifyPath('hasNodeUserCodes');
-    });
-    this.hass.callApi('GET', `zwave/protection/${this.nodes[selectedNode].attributes.node_id}`).then((protections) => {
-      this._protection = this._objToArray(protections);
-      if (this._protection) {
-        if (this._protection.length === 0) {
-          return;
+    this.notifyPath("hasNodeUserCodes");
+    this.hass
+      .callApi(
+        "GET",
+        `zwave/usercodes/${this.nodes[selectedNode].attributes.node_id}`
+      )
+      .then((usercodes) => {
+        this.userCodes = this._objToArray(usercodes);
+        this.hasNodeUserCodes = this.userCodes.length > 0;
+        this.notifyPath("hasNodeUserCodes");
+      });
+    this.hass
+      .callApi(
+        "GET",
+        `zwave/protection/${this.nodes[selectedNode].attributes.node_id}`
+      )
+      .then((protections) => {
+        this._protection = this._objToArray(protections);
+        if (this._protection) {
+          if (this._protection.length === 0) {
+            return;
+          }
+          this._protectionNode = true;
         }
-        this._protectionNode = true;
-      }
-    });
+      });
+
+    this.nodeFailed = this.nodes[selectedNode].attributes.is_failed;
   }
 
   selectedEntityChanged(selectedEntity) {
     if (selectedEntity === -1) return;
-    var el = this;
-    el.hass.callApi('GET', 'zwave/values/' + el.nodes[el.selectedNode].attributes.node_id).then((values) => {
-      el.values = el._objToArray(values);
-    });
+    this.hass
+      .callApi(
+        "GET",
+        `zwave/values/${this.nodes[this.selectedNode].attributes.node_id}`
+      )
+      .then((values) => {
+        this.values = this._objToArray(values);
+      });
 
-    var valueId = el.entities[selectedEntity].attributes.value_id;
-    var valueData = el.values.find(function (obj) { return obj.key === valueId; });
-    var valueIndex = el.values.indexOf(valueData);
-    el.hass.callApi('GET', 'config/zwave/device_config/' + valueId)
-      .then(function (data) {
-        el.entityIgnored = data.ignored || false;
-        el.entityPollingIntensity = el.values[valueIndex].value.poll_intensity;
+    const valueId = this.entities[selectedEntity].attributes.value_id;
+    const valueData = this.values.find((obj) => obj.key === valueId);
+    const valueIndex = this.values.indexOf(valueData);
+    this.hass
+      .callApi(
+        "GET",
+        `config/zwave/device_config/${this.entities[selectedEntity].entity_id}`
+      )
+      .then((data) => {
+        this.setProperties({
+          entityIgnored: data.ignored || false,
+          entityPollingIntensity: this.values[valueIndex].value.poll_intensity,
+        });
+      })
+      .catch(() => {
+        this.setProperties({
+          entityIgnored: false,
+          entityPollingIntensity: this.values[valueIndex].value.poll_intensity,
+        });
       });
   }
 
-  computeSelectedEntityAttrs(selectedEntity) {
-    if (selectedEntity === -1) return 'No entity selected';
-    var entityAttrs = this.entities[selectedEntity].attributes;
-    var att = [];
-    Object.keys(entityAttrs).forEach(function (key) {
-      att.push(key + ': ' + entityAttrs[key]);
-    });
-    return att.sort();
-  }
-
   computeSelectCaption(stateObj) {
-    return computeStateName(stateObj) + ' (Node:' +
-      stateObj.attributes.node_id + ' ' +
-      stateObj.attributes.query_stage + ')';
+    return (
+      computeStateName(stateObj) +
+      " (Node:" +
+      stateObj.attributes.node_id +
+      " " +
+      stateObj.attributes.query_stage +
+      ")"
+    );
   }
 
   computeSelectCaptionEnt(stateObj) {
-    return (computeStateDomain(stateObj) + '.'
-            + computeStateName(stateObj));
+    return computeStateDomain(stateObj) + "." + computeStateName(stateObj);
   }
 
   computeIsNodeSelected() {
-    return (this.nodes && this.selectedNode !== -1);
+    return this.nodes && this.selectedNode !== -1;
   }
 
   computeIsEntitySelected(selectedEntity) {
-    return (selectedEntity === -1);
+    return selectedEntity === -1;
   }
 
   computeNodeServiceData(selectedNode) {
@@ -474,20 +564,7 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
   computeHealNodeServiceData(selectedNode) {
     return {
       node_id: this.nodes[selectedNode].attributes.node_id,
-      return_routes: true
-    };
-  }
-
-  computeGetNodeName(selectedNode) {
-    if (this.selectedNode === -1 ||
-      !this.nodes[selectedNode].entity_id) return -1;
-    return this.nodes[selectedNode].attributes.node_name;
-  }
-
-  computeNodeNameServiceData(newNodeNameInput) {
-    return {
-      node_id: this.nodes[this.selectedNode].attributes.node_id,
-      name: newNodeNameInput
+      return_routes: true,
     };
   }
 
@@ -505,12 +582,30 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
     };
   }
 
-  saveEntity() {
-    var data = {
+  _nodeMoreInfo() {
+    this.fire("hass-more-info", {
+      entityId: this.nodes[this.selectedNode].entity_id,
+    });
+  }
+
+  _entityMoreInfo() {
+    this.fire("hass-more-info", {
+      entityId: this.entities[this.selectedEntity].entity_id,
+    });
+  }
+
+  _saveEntity() {
+    const data = {
       ignored: this.entityIgnored,
       polling_intensity: parseInt(this.entityPollingIntensity),
     };
-    return this.hass.callApi('POST', 'config/zwave/device_config/' + this.entities[this.selectedEntity].entity_id, data);
+    return this.hass.callApi(
+      "POST",
+      `config/zwave/device_config/${
+        this.entities[this.selectedEntity].entity_id
+      }`,
+      data
+    );
   }
 
   toggleHelp() {
@@ -518,10 +613,10 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
   }
 
   _objToArray(obj) {
-    var array = [];
-    Object.keys(obj).forEach(function (key) {
+    const array = [];
+    Object.keys(obj).forEach((key) => {
       array.push({
-        key: key,
+        key,
         value: obj[key],
       });
     });
@@ -533,4 +628,4 @@ class HaConfigZwave extends LocalizeMixin(PolymerElement) {
   }
 }
 
-customElements.define('ha-config-zwave', HaConfigZwave);
+customElements.define("ha-config-zwave", HaConfigZwave);

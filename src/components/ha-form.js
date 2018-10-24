@@ -1,14 +1,14 @@
-import '@polymer/paper-checkbox/paper-checkbox.js';
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-listbox/paper-listbox.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import "@polymer/paper-checkbox/paper-checkbox.js";
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu.js";
+import "@polymer/paper-icon-button/paper-icon-button.js";
+import "@polymer/paper-input/paper-input.js";
+import "@polymer/paper-item/paper-item.js";
+import "@polymer/paper-listbox/paper-listbox.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
 
-import './ha-paper-slider.js';
-import EventsMixin from '../mixins/events-mixin.js';
+import "./ha-paper-slider.js";
+import EventsMixin from "../mixins/events-mixin.js";
 
 /*
  * @appliesMixin EventsMixin
@@ -20,10 +20,14 @@ class HaForm extends EventsMixin(PolymerElement) {
       .error {
         color: red;
       }
+      paper-checkbox {
+        display: inline-block;
+        padding: 22px 0;
+      }
     </style>
     <template is="dom-if" if="[[_isArray(schema)]]" restamp="">
       <template is="dom-if" if="[[error.base]]">
-          [[computeError(error.base, schema)]]
+          <div class='error'>[[computeError(error.base, schema)]]</div>
       </template>
 
       <template is="dom-repeat" items="[[schema]]">
@@ -96,14 +100,16 @@ class HaForm extends EventsMixin(PolymerElement) {
       </template>
 
       <template is="dom-if" if="[[_equals(schema.type, &quot;boolean&quot;)]]" restamp="">
-        <paper-checkbox checked="{{data}}">[[computeLabel(schema)]]</paper-checkbox>
+        <div>
+          <paper-checkbox checked="{{data}}">[[computeLabel(schema)]]</paper-checkbox>
+        </div>
       </template>
 
       <template is="dom-if" if="[[_equals(schema.type, &quot;select&quot;)]]" restamp="">
         <paper-dropdown-menu label="[[computeLabel(schema)]]">
           <paper-listbox slot="dropdown-content" attr-for-selected="item-name" selected="{{data}}">
             <template is="dom-repeat" items="[[schema.options]]">
-              <paper-item item-name$="[[item]]">[[item]]</paper-item>
+              <paper-item item-name$="[[_optionValue(item)]]">[[_optionLabel(item)]]</paper-item>
             </template>
           </paper-listbox>
         </paper-dropdown-menu>
@@ -126,7 +132,7 @@ class HaForm extends EventsMixin(PolymerElement) {
       // schema object.
       computeLabel: {
         type: Function,
-        value: () => schema => schema && schema.name,
+        value: () => (schema) => schema && schema.name,
       },
 
       // A function that will computes an error message to be displayed for a
@@ -143,7 +149,7 @@ class HaForm extends EventsMixin(PolymerElement) {
   }
 
   _isRange(schema) {
-    return ('valueMin' in schema) && ('valueMax' in schema);
+    return "valueMin" in schema && "valueMax" in schema;
   }
 
   _equals(a, b) {
@@ -155,20 +161,31 @@ class HaForm extends EventsMixin(PolymerElement) {
   }
 
   _getValue(obj, item) {
-    return obj[item.name];
+    if (obj) {
+      return obj[item.name];
+    }
+    return null;
   }
 
   _valueChanged(ev) {
-    this.set(['data', ev.model.item.name], ev.detail.value);
+    this.set(["data", ev.model.item.name], ev.detail.value);
   }
 
   _passwordFieldType(unmaskedPassword) {
-    return unmaskedPassword ? 'text' : 'password';
+    return unmaskedPassword ? "text" : "password";
   }
 
   _passwordFieldIcon(unmaskedPassword) {
-    return unmaskedPassword ? 'hass:eye-off' : 'hass:eye';
+    return unmaskedPassword ? "hass:eye-off" : "hass:eye";
+  }
+
+  _optionValue(item) {
+    return Array.isArray(item) ? item[0] : item;
+  }
+
+  _optionLabel(item) {
+    return Array.isArray(item) ? item[1] : item;
   }
 }
 
-customElements.define('ha-form', HaForm);
+customElements.define("ha-form", HaForm);

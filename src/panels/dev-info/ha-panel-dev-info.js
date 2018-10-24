@@ -1,23 +1,28 @@
-import '@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
-import '@polymer/paper-card/paper-card.js';
-import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import '@polymer/paper-dialog/paper-dialog.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@polymer/paper-item/paper-item-body.js';
-import '@polymer/paper-item/paper-item.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import "@polymer/app-layout/app-header-layout/app-header-layout.js";
+import "@polymer/app-layout/app-header/app-header.js";
+import "@polymer/app-layout/app-toolbar/app-toolbar.js";
+import "@polymer/paper-card/paper-card.js";
+import "@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js";
+import "@polymer/paper-dialog/paper-dialog.js";
+import "@polymer/paper-icon-button/paper-icon-button.js";
+import "@polymer/paper-item/paper-item-body.js";
+import "@polymer/paper-item/paper-item.js";
+import { html } from "@polymer/polymer/lib/utils/html-tag.js";
+import { PolymerElement } from "@polymer/polymer/polymer-element.js";
 
-import '../../components/buttons/ha-call-service-button.js';
-import '../../components/ha-menu-button.js';
-import '../../resources/ha-style.js';
+import "../../components/buttons/ha-call-service-button.js";
+import "../../components/ha-menu-button.js";
+import "../../resources/ha-style.js";
 
-import formatDateTime from '../../common/datetime/format_date_time.js';
-import formatTime from '../../common/datetime/format_time.js';
+import formatDateTime from "../../common/datetime/format_date_time.js";
+import formatTime from "../../common/datetime/format_time.js";
 
-class HaPanelDevInfo extends PolymerElement {
+import EventsMixin from "../../mixins/events-mixin.js";
+import LocalizeMixin from "../../mixins/localize-mixin.js";
+
+let registeredDialog = false;
+
+class HaPanelDevInfo extends EventsMixin(LocalizeMixin(PolymerElement)) {
   static get template() {
     return html`
     <style include="iron-positioning ha-style">
@@ -122,10 +127,11 @@ class HaPanelDevInfo extends PolymerElement {
           <p class='version'>
             <a href='https://www.home-assistant.io'><img src="/static/icons/favicon-192x192.png" height="192" /></a><br />
             Home Assistant<br />
-            [[hass.config.core.version]]
+            [[hass.config.version]]
           </p>
           <p>
-            Path to configuration.yaml: [[hass.config.core.config_dir]]
+            Path to configuration.yaml: [[hass.config.config_dir]]
+            <br><a href="#" on-click="_showComponents">[[loadedComponents.length]] Loaded Components</a>
           </p>
           <p class='develop'>
             <a href='https://www.home-assistant.io/developers/credits/' target='_blank'>
@@ -239,7 +245,7 @@ class HaPanelDevInfo extends PolymerElement {
 
       errorLog: {
         type: String,
-        value: '',
+        value: "",
       },
 
       updating: {
@@ -263,14 +269,21 @@ class HaPanelDevInfo extends PolymerElement {
         type: Array,
         value: window.CUSTOM_UI_LIST || [],
       },
+
+      loadedComponents: {
+        type: Array,
+        value: [],
+      },
     };
   }
 
   ready() {
     super.ready();
-    this.addEventListener('hass-service-called', ev => this.serviceCalled(ev));
+    this.addEventListener("hass-service-called", (ev) =>
+      this.serviceCalled(ev)
+    );
     // Fix for overlay showing on top of dialog.
-    this.$.showlog.addEventListener('iron-overlay-opened', (ev) => {
+    this.$.showlog.addEventListener("iron-overlay-opened", (ev) => {
       if (ev.target.withBackdrop) {
         ev.target.parentNode.insertBefore(ev.target.backdropElement, ev.target);
       }
@@ -279,9 +292,9 @@ class HaPanelDevInfo extends PolymerElement {
 
   serviceCalled(ev) {
     // Check if this is for us
-    if (ev.detail.success && ev.detail.domain === 'system_log') {
+    if (ev.detail.success && ev.detail.domain === "system_log") {
       // Do the right thing depending on service
-      if (ev.detail.service === 'clear') {
+      if (ev.detail.service === "clear") {
         this.items = [];
       }
     }
@@ -291,6 +304,17 @@ class HaPanelDevInfo extends PolymerElement {
     super.connectedCallback();
     this.$.scrollable.dialogElement = this.$.showlog;
     this._fetchData();
+    this.loadedComponents = this.hass.config.components;
+
+    if (!registeredDialog) {
+      registeredDialog = true;
+      this.fire("register-dialog", {
+        dialogShowEvent: "show-loaded-components",
+        dialogTag: "ha-loaded-components",
+        dialogImport: () => import("./ha-loaded-components.js"),
+      });
+    }
+
     if (!window.CUSTOM_UI_LIST) {
       // Give custom UI an opportunity to load.
       setTimeout(() => {
@@ -304,10 +328,10 @@ class HaPanelDevInfo extends PolymerElement {
   refreshErrorLog(ev) {
     if (ev) ev.preventDefault();
 
-    this.errorLog = 'Loading error log…';
+    this.errorLog = "Loading error log…";
 
-    this.hass.callApi('GET', 'error_log').then((log) => {
-      this.errorLog = log || 'No errors have been reported.';
+    this.hass.callApi("GET", "error_log").then((log) => {
+      this.errorLog = log || "No errors have been reported.";
     });
   }
 
@@ -320,8 +344,9 @@ class HaPanelDevInfo extends PolymerElement {
     const dateTime = new Date(date * 1000);
     const dateTimeDay = new Date(date * 1000).setHours(0, 0, 0, 0);
 
-    return dateTimeDay < today ?
-      formatDateTime(dateTime) : formatTime(dateTime);
+    return dateTimeDay < today
+      ? formatDateTime(dateTime, this.hass.language)
+      : formatTime(dateTime, this.hass.language);
   }
 
   openLog(event) {
@@ -331,26 +356,32 @@ class HaPanelDevInfo extends PolymerElement {
 
   _fetchData() {
     this.updating = true;
-    this.hass.callApi('get', 'error/all')
-      .then((items) => {
-        this.items = items;
-        this.updating = false;
-      });
+    this.hass.callApi("get", "error/all").then((items) => {
+      this.items = items;
+      this.updating = false;
+    });
   }
 
   _defaultPageText() {
-    return `>> ${localStorage.defaultPage === 'lovelace' ?
-      'Remove' : 'Set'} lovelace as default page on this device <<`;
+    return `>> ${
+      localStorage.defaultPage === "lovelace" ? "Remove" : "Set"
+    } lovelace as default page on this device <<`;
   }
 
   _toggleDefaultPage() {
-    if (localStorage.defaultPage === 'lovelace') {
+    if (localStorage.defaultPage === "lovelace") {
       delete localStorage.defaultPage;
     } else {
-      localStorage.defaultPage = 'lovelace';
+      localStorage.defaultPage = "lovelace";
     }
     this.$.love.innerText = this._defaultPageText();
   }
+
+  _showComponents() {
+    this.fire("show-loaded-components", {
+      hass: this.hass,
+    });
+  }
 }
 
-customElements.define('ha-panel-dev-info', HaPanelDevInfo);
+customElements.define("ha-panel-dev-info", HaPanelDevInfo);
